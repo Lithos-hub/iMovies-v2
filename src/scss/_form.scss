@@ -1,0 +1,7 @@
+.label {
+  @apply text-cyan-800;
+}
+
+.input {
+  @apply rounded-[5px] p-2 pl-3 border focus:outline-none;
+}
