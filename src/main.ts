@@ -3,6 +3,8 @@ import "./index.css";
 import "./scss/app.scss";
 import App from "./App.vue";
 import router from "./router";
-import { createPinia } from "pinia";
+import axios from "axios";
+import VueAxios from "vue-axios";
+import pinia from "./stores";
 
-createApp(App).use(router).use(createPinia()).mount("#app");
+createApp(App).use(pinia).use(router).use(VueAxios, axios).mount("#app");

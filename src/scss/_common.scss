@@ -1,0 +1,33 @@
+h1,
+h2,
+h3 {
+  background: linear-gradient(120deg, #330d69, #30c9cd);
+  filter: brightness(1.5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: Rajdhani-SemiBold;
+}
+
+h1 {
+  @apply font-[Rajdhani-bold] text-4xl;
+}
+
+h2 {
+  @apply font-[Rajdhani-bold] text-3xl;
+}
+
+h3 {
+  @apply font-[Rajdhani-bold] text-2xl;
+}
+
+h4 {
+  @apply font-[Rajdhani-semiBold] text-blue-500 text-xl;
+}
+
+p {
+  @apply font-[Rajdhani-regular] text-cyan-100;
+}
+
+hr {
+  @apply bg-sky-300 h-[1px] border-none;
+}

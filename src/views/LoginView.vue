@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="centered">
     <section
-      class="bg-white rounded-[10px] shadow-lg p-10 min-w-[250px] w-[500px]"
+      class="mx-auto bg-white rounded-[10px] shadow-lg p-10 min-w-[250px] w-[500px]"
     >
       <h1 class="text-4xl">iMovies</h1>
       <form @submit.prevent="login">
@@ -39,12 +39,12 @@
 </template>
 
 <script setup lang="ts">
-import router from "../router";
+import { useNavigationStore } from "../stores/Navigation";
+
+const { goTo } = useNavigationStore();
 
 // TODO: Login
-const login = () => router.push("/home");
-
-const goTo = (path: string) => router.push(path);
+const login = () => goTo("/home");
 </script>
 
 <style scoped></style>

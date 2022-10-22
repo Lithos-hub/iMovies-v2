@@ -1,0 +1,24 @@
+@font-face {
+  font-family: "Rajdhani-bold";
+  src: url("../assets/fonts/Rajdhani-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rajdhani-light";
+  src: url("../assets/fonts/Rajdhani-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rajdhani-medium";
+  src: url("../assets/fonts/Rajdhani-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rajdhani-regular";
+  src: url("../assets/fonts/Rajdhani-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rajdhani-semiBold";
+  src: url("../assets/fonts/Rajdhani-SemiBold.ttf") format("truetype");
+}
+
+* {
+  @apply font-[Rajdhani-light];
+}

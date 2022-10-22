@@ -1,0 +1,11 @@
+.mobile__navbar {
+  @apply block bg-cyan-900 text-cyan-100 font-light rounded-md;
+}
+
+.navbar {
+  @apply block bg-cyan-900 bg-opacity-10 text-[11px] text-cyan-100 p-1 font-light rounded-md;
+}
+
+.navbar__link {
+  @apply px-10 hover:bg-cyan-800 rounded-md cursor-pointer duration-200 my-auto py-2;
+}
