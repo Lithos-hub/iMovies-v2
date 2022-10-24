@@ -18,20 +18,20 @@
       </div>
     </div>
     <main class="pb-5">
-      <div class="flex flex-col md:grid md:grid-cols-5 gap-5">
-        <div class="md:col-span-4">
+      <div class="flex flex-col lg:grid lg:grid-cols-5 gap-5">
+        <div class="lg:col-span-4">
           <h2 class="my-5">Movie of the week</h2>
           <hr class="mb-5" />
-          <div class="flex flex-col md:grid md:grid-cols-2 gap-5">
+          <div class="flex flex-col lg:grid lg:grid-cols-2 gap-5">
             <iframe
               :src="`https://www.youtube.com/embed/${trailerOfTheWeek?.key}`"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
-              class="w-full h-[350px] md:h-full rounded-[10px]"
+              class="w-full h-[350px] lg:h-full rounded-[10px]"
             ></iframe>
 
-            <div class="flex flex-col md:grid md:grid-cols-3 gap-5">
+            <div class="flex flex-col lg:grid lg:grid-cols-3 gap-5">
               <div>
                 <img
                   :src="`${imageBaseUrl}${movieOfTheWeek?.poster_path}`"
@@ -51,7 +51,7 @@
                     {{ movieOfTheWeek?.vote_count }}
                   </div>
                 </div>
-                <p class="text-center md:text-justify mt-5">
+                <p class="text-center lg:text-justify mt-5">
                   {{ movieOfTheWeek?.overview }}
                 </p>
               </div>
@@ -94,7 +94,7 @@ const dataLoaded = computed(
 );
 
 const animateScroll = () => {
-  const SCROLL_MAX = carrousel.value.scrollWidth;
+  const SCROLL_MAX = carrousel.value.scrollWidth - carrousel.value.offsetWidth;
   let i = 0;
   setInterval(() => {
     if (carrousel.value) {
