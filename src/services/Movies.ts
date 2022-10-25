@@ -1,6 +1,11 @@
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
 
-import { apiCall, getQueryByOptions, getQueryById } from "./utils";
+import {
+  apiCall,
+  getQueryByOptions,
+  getQueryById,
+  getQueryBySearch,
+} from "./utils";
 
 export default {
   getMovies(options: MovieAxiosOptions) {
@@ -9,6 +14,13 @@ export default {
   },
   getMovieTrailer(id: number | string) {
     const url = getQueryById(id);
+    return apiCall(url);
+  },
+  getMovieBySearch(
+    searchOptions: MovieAxiosOptions,
+    isSearchingMovie: boolean
+  ) {
+    const url = getQueryBySearch(searchOptions, isSearchingMovie);
     return apiCall(url);
   },
 };

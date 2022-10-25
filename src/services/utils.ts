@@ -11,6 +11,7 @@ export const ONE_WEEK_AGO = formatDate(getDateAgo(7));
 export const ONE_MONTH_AGO = formatDate(getDateAgo(30));
 
 let url = `${BASE_URL}/discover/movie?api_key=${TMDB_APIKEY}`;
+let searchMovieUrl = `${BASE_URL}/search/movie?api_key=${TMDB_APIKEY}`;
 
 // Functions
 export function getCurrentDay() {
@@ -62,6 +63,32 @@ export const getQueryByOptions = (options: MovieAxiosOptions): string => {
     url += `${query}${value}`;
   }
   return url;
+};
+
+export const getQueryBySearch = (
+  options: MovieAxiosOptions,
+  isSearchingMovie: boolean
+): string => {
+  let urlToSend = "";
+  const queryOptions: Record<string, string> = {
+    page: "&page=",
+    by_adult: "&include_adult=",
+    sort_by: "&sort_by=",
+    year: "&year=",
+    query: "&query=",
+    include_video: "&include_video=",
+    "primary_release_date.gte": "&primary_release_date.gte=",
+    "primary_release_date.lte": "&primary_release_date.lte=",
+    "vote_average.gte": "&vote_average.gte=",
+  };
+  for (let option in options) {
+    let query = queryOptions[option as keyof typeof queryOptions];
+    let value = options[option as keyof typeof options];
+    urlToSend = searchMovieUrl += `${query}${value}`;
+  }
+  if (isSearchingMovie === false)
+    urlToSend = searchMovieUrl.replace("search/movie", "search/person");
+  return urlToSend;
 };
 
 export const getQueryById = (id: string | number): string => {

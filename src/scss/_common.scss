@@ -31,3 +31,11 @@ p {
 hr {
   @apply bg-sky-300 h-[1px] border-none;
 }
+
+.blurring__title--primary {
+  @apply absolute bottom-0 left-0 text-[20px] md:text-[18px] lg:text-[16px] w-full bg-cyan-900 bg-opacity-50 backdrop-blur-sm;
+}
+
+.blurring__title--secondary {
+  @apply absolute bottom-0 left-0 text-[20px] md:text-[18px] lg:text-[16px] w-full bg-indigo-900 bg-opacity-50 backdrop-blur-sm;
+}

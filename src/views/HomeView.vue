@@ -10,9 +10,7 @@
         class="relative"
       >
         <img class="carrousel__img" :src="imageBaseUrl + backdrop_path" />
-        <div
-          class="absolute bottom-0 left-0 w-full bg-cyan-900 bg-opacity-50 backdrop-blur-sm"
-        >
+        <div class="blurring__title--primary">
           <small>{{ title }}</small>
         </div>
       </div>
@@ -76,7 +74,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { onMounted, ref, nextTick, computed } from "vue";
+import { onMounted, ref, computed } from "vue";
 
 import Spinner from "../components/Spinner.vue";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
@@ -125,7 +123,7 @@ onMounted(async () => {
   } as MovieAxiosOptions);
 
   await movieStore.getMovieOfTheWeek();
-  if (dataLoaded.value) animateScroll();
+  if (dataLoaded.value) setTimeout(() => animateScroll(), 250);
 });
 </script>
 

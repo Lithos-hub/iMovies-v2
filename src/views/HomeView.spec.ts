@@ -11,7 +11,7 @@ const getWrapper = () =>
     },
   });
 
-describe("Component: Button", () => {
+describe("Component: View", () => {
   const wrapper = getWrapper();
 
   it("Renders the component", () => {

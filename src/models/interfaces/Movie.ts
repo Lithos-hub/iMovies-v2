@@ -21,6 +21,7 @@ export interface MovieAxiosOptions {
   include_adult?: boolean;
   year?: number;
   include_video?: boolean;
+  query?: string;
 }
 
 export interface MovieVideoModel {

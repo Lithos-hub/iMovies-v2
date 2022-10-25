@@ -3,11 +3,16 @@ import { MovieModel, MovieVideoModel } from "../models/interfaces/Movie";
 import MoviesServices from "../services/Movies";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
 
+import noImage from "../assets/img/no-image.jpg";
+
 import { ONE_WEEK_AGO, CURRENT_DATE } from "../services/utils";
+import { ArtistModel } from "../models/interfaces/Artist";
 
 export const useMoviesStore = defineStore("useMovies", {
   state: () => ({
+    errorImage: noImage,
     movies: [] as MovieModel[],
+    artistResults: [] as ArtistModel[],
     movieOfTheWeek: undefined as undefined | MovieModel,
     trailerOfTheWeek: undefined as undefined | MovieVideoModel,
   }),
@@ -16,6 +21,20 @@ export const useMoviesStore = defineStore("useMovies", {
       await MoviesServices.getMovies(options).then((res) => {
         this.movies = res as MovieModel[];
       });
+    },
+    async onSearch(searchOptions: MovieAxiosOptions) {
+      this.movies = [];
+      this.artistResults = [];
+      await MoviesServices.getMovieBySearch(searchOptions, true).then(
+        async (res) => {
+          this.movies = res as MovieModel[];
+          await MoviesServices.getMovieBySearch(searchOptions, false).then(
+            (res) => {
+              this.artistResults = res as ArtistModel[];
+            }
+          );
+        }
+      );
     },
     async getMovieOfTheWeek() {
       const options = {

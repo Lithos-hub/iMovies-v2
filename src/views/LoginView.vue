@@ -8,7 +8,11 @@
         <section class="flex flex-col gap-10 justify-around mt-10">
           <div class="flex flex-col">
             <label for="Email" class="font-bold label">Email</label>
-            <input placeholder="Write your email" name="Email" class="input" />
+            <input
+              placeholder="Write your email"
+              name="Email"
+              class="input__primary"
+            />
           </div>
           <div class="flex flex-col">
             <label for="Email" class="font-bold label">Password</label>
@@ -17,7 +21,7 @@
               placeholder="Write your password"
               autocomplete="true"
               name="Email"
-              class="input"
+              class="input__primary"
             />
           </div>
         </section>
