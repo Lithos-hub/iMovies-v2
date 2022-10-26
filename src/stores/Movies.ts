@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
-import { MovieModel, MovieVideoModel } from "../models/interfaces/Movie";
+import {
+  MovieDetailsModel,
+  MovieListModel,
+  MovieVideoModel,
+} from "../models/interfaces/Movie";
 import MoviesServices from "../services/Movies";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
 
@@ -11,15 +15,21 @@ import { ArtistModel } from "../models/interfaces/Artist";
 export const useMoviesStore = defineStore("useMovies", {
   state: () => ({
     errorImage: noImage,
-    movies: [] as MovieModel[],
+    movies: [] as MovieListModel[],
+    movie: {} as MovieDetailsModel,
     artistResults: [] as ArtistModel[],
-    movieOfTheWeek: undefined as undefined | MovieModel,
+    movieOfTheWeek: undefined as undefined | MovieListModel,
     trailerOfTheWeek: undefined as undefined | MovieVideoModel,
   }),
   actions: {
     async getMovies(options: MovieAxiosOptions) {
       await MoviesServices.getMovies(options).then((res) => {
-        this.movies = res as MovieModel[];
+        this.movies = res as MovieListModel[];
+      });
+    },
+    async getMovieDetails(id: string) {
+      await MoviesServices.getMovieById(id).then((res) => {
+        this.movie = res as MovieDetailsModel;
       });
     },
     async onSearch(searchOptions: MovieAxiosOptions) {
@@ -27,7 +37,7 @@ export const useMoviesStore = defineStore("useMovies", {
       this.artistResults = [];
       await MoviesServices.getMovieBySearch(searchOptions, true).then(
         async (res) => {
-          this.movies = res as MovieModel[];
+          this.movies = res as MovieListModel[];
           await MoviesServices.getMovieBySearch(searchOptions, false).then(
             (res) => {
               this.artistResults = res as ArtistModel[];
@@ -46,7 +56,7 @@ export const useMoviesStore = defineStore("useMovies", {
         include_video: true,
       };
       await MoviesServices.getMovies(options).then(async (res: any) => {
-        this.movieOfTheWeek = res[0] as MovieModel;
+        this.movieOfTheWeek = res[0] as MovieListModel;
         await MoviesServices.getMovieTrailer(this.movieOfTheWeek.id).then(
           (res: any) => {
             this.trailerOfTheWeek = res[0] as MovieVideoModel;

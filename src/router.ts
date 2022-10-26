@@ -21,6 +21,11 @@ const routes = [
     name: "Popular",
     component: () => import("./views/PopularView.vue"),
   },
+  {
+    path: "/movie/:id",
+    name: "Movie details",
+    component: () => import("./views/MovieDetails.vue"),
+  },
 ];
 
 const router = createRouter({

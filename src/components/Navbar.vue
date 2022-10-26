@@ -40,16 +40,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
+
 import { navbarMenuLinks } from "../utils";
 import { useNavigationStore } from "../stores/Navigation";
 import { useMediaStore } from "../stores/Media";
+import { useRoute } from "vue-router";
 
 const { goTo } = useNavigationStore();
 const mediaStore = useMediaStore();
 
+const route = useRoute();
+
 const screen = computed(() => mediaStore.getScreen);
 const menu = ref(false);
+
+watch(
+  () => route.fullPath,
+  () => (menu.value = false)
+);
 </script>
 
 <style scoped></style>

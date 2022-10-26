@@ -32,12 +32,11 @@ export function formatDate(date: string) {
 }
 
 export const apiCall = (url: string) => {
-  console.info("Calling to: ", url);
   return new Promise((resolve, reject) => {
     axios
       .get(url)
       .then(({ data }) => {
-        resolve(data.results);
+        resolve(data.results ? data.results : data);
       })
       .catch((err) => {
         reject(err);
@@ -91,6 +90,10 @@ export const getQueryBySearch = (
   return urlToSend;
 };
 
-export const getQueryById = (id: string | number): string => {
+export const getVideoQueryById = (id: string | number): string => {
   return `${BASE_URL}/movie/${id}/videos?api_key=${TMDB_APIKEY}`;
+};
+
+export const getMovieQueryById = (id: string | number): string => {
+  return `${BASE_URL}/movie/${id}?api_key=${TMDB_APIKEY}`;
 };

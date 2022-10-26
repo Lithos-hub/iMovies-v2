@@ -21,6 +21,10 @@
           :key="id"
           class="relative w-full"
         >
+          <div
+            class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
+            @click="goTo(`/movie/${id}`)"
+          ></div>
           <img
             :src="poster_path ? imageBaseUrl + poster_path : errorImage"
             class="w-full rounded-md"
@@ -46,11 +50,13 @@ import { storeToRefs } from "pinia";
 import { imageBaseUrl } from "../utils";
 
 import { useMoviesStore } from "../stores/Movies";
+import { useNavigationStore } from "../stores/Navigation";
 
 import SearchInput from "../components/SearchInput.vue";
 import Spinner from "../components/Spinner.vue";
 
 const movieStore = useMoviesStore();
+const { goTo } = useNavigationStore();
 
 const { movies, errorImage } = storeToRefs(movieStore);
 

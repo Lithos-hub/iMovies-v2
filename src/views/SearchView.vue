@@ -23,6 +23,10 @@
               :key="id"
               class="relative w-full"
             >
+              <div
+                class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
+                @click="goTo(`/movie/${id}`)"
+              ></div>
               <img
                 :src="poster_path ? imageBaseUrl + poster_path : errorImage"
                 class="w-full rounded-md"
@@ -53,6 +57,10 @@
               >
                 {{ known_for_department }}
               </div>
+              <div
+                class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
+                @click="goTo(`/movie/${id}`)"
+              ></div>
               <img
                 :src="profile_path ? imageBaseUrl + profile_path : errorImage"
                 class="w-full rounded-md"
@@ -83,8 +91,10 @@ import { imageBaseUrl } from "../utils";
 
 import Spinner from "../components/Spinner.vue";
 import SearchInput from "../components/SearchInput.vue";
+import { useNavigationStore } from "../stores/Navigation";
 
 const movieStore = useMoviesStore();
+const { goTo } = useNavigationStore();
 
 const { movies, artistResults, errorImage } = storeToRefs(movieStore);
 
