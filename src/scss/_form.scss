@@ -3,9 +3,9 @@
 }
 
 .input__primary {
-  @apply rounded-[5px] p-2 pl-3 border focus:outline-none text-cyan-900 font-[Rajdhani-semiBold];
+  @apply rounded-[5px] p-2 px-5 border text-cyan-900 font-[Rajdhani-semiBold] focus:outline-none;
 }
 
 .input__secondary {
-  @apply w-[500px] p-2 pl-4 rounded-full mx-auto focus:outline-none text-cyan-300 font-[Rajdhani-semiBold] h-[50px] bg-transparent border border-cyan-500;
+  @apply w-full p-2 px-5 rounded-full mx-auto text-cyan-300 font-[Rajdhani-semiBold] h-[50px] bg-transparent border border-cyan-500 focus:outline-none;
 }

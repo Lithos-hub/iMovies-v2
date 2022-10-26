@@ -10,7 +10,6 @@ export const CURRENT_DATE = formatDate(getCurrentDay());
 export const ONE_WEEK_AGO = formatDate(getDateAgo(7));
 export const ONE_MONTH_AGO = formatDate(getDateAgo(30));
 
-let url = `${BASE_URL}/discover/movie?api_key=${TMDB_APIKEY}`;
 let searchMovieUrl = `${BASE_URL}/search/movie?api_key=${TMDB_APIKEY}`;
 
 // Functions
@@ -33,7 +32,7 @@ export function formatDate(date: string) {
 }
 
 export const apiCall = (url: string) => {
-  console.log("Calling to: ", url);
+  console.info("Calling to: ", url);
   return new Promise((resolve, reject) => {
     axios
       .get(url)
@@ -47,6 +46,7 @@ export const apiCall = (url: string) => {
 };
 
 export const getQueryByOptions = (options: MovieAxiosOptions): string => {
+  let urlToSend = `${BASE_URL}/discover/movie?api_key=${TMDB_APIKEY}`;
   const queryOptions: Record<string, string> = {
     page: "&page=",
     by_adult: "&include_adult=",
@@ -60,9 +60,9 @@ export const getQueryByOptions = (options: MovieAxiosOptions): string => {
   for (let option in options) {
     let query = queryOptions[option as keyof typeof queryOptions];
     let value = options[option as keyof typeof options];
-    url += `${query}${value}`;
+    urlToSend += `${query}${value}`;
   }
-  return url;
+  return urlToSend;
 };
 
 export const getQueryBySearch = (

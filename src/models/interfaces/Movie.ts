@@ -19,7 +19,7 @@ export interface MovieAxiosOptions {
   page: number;
   sort_by?: string;
   include_adult?: boolean;
-  year?: number;
+  year?: number | string;
   include_video?: boolean;
   query?: string;
 }

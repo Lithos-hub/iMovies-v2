@@ -16,6 +16,11 @@ const routes = [
     name: "Search",
     component: () => import("./views/SearchView.vue"),
   },
+  {
+    path: "/popular",
+    name: "Popular",
+    component: () => import("./views/PopularView.vue"),
+  },
 ];
 
 const router = createRouter({
