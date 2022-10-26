@@ -6,8 +6,6 @@ import SearchView from "./SearchView.vue";
 import { createTestingPinia } from "@pinia/testing";
 import { createPinia, setActivePinia } from "pinia";
 
-const pinia = createTestingPinia();
-
 const getWrapper = () =>
   mount(SearchView, {
     global: {
@@ -30,9 +28,3 @@ describe("Component: View", () => {
     expect(wrapper.exists()).toBe(true);
   });
 });
-
-// TODO:
-/*
-  - Test for input
-  - Test for onSearch function
-*/

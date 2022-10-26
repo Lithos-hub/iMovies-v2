@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 
 import { imageBaseUrl } from "../utils";
@@ -66,14 +66,10 @@ const errorMessage = computed(() =>
 const dataLoaded = computed(() => movies.value.length > 0);
 
 const onPressEnter = async (event: Event) => {
-  const { target } = event;
   movies.value = [];
-  if (String((target as HTMLInputElement).value).length !== 4) {
-    errorMessage.value = "Write a valid year";
-  } else {
+  if (!errorMessage.value) {
     if (event) event.preventDefault();
     isLoading.value = true;
-    errorMessage.value = "";
     await movieStore.getMovies({
       page: 1,
       sort_by: "popularity.desc",
@@ -82,10 +78,6 @@ const onPressEnter = async (event: Event) => {
   }
   isLoading.value = false;
 };
-
-onMounted(() => {
-  console.log(year.value);
-});
 </script>
 
 <style scoped></style>
