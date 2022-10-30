@@ -3,7 +3,7 @@
     <ul class="flex justify-around align-middle">
       <li
         class="cursor-pointer hover:-hue-rotate-30 hover:brightness-125 duration-200"
-        @click="goTo('/')"
+        @click="goTo('/home')"
       >
         <h1>iMovies</h1>
       </li>

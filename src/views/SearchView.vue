@@ -114,5 +114,3 @@ const onPressEnter = async (event: Event) => {
   isLoading.value = false;
 };
 </script>
-
-<style lang="scss" scoped></style>

@@ -22,9 +22,19 @@ const routes = [
     component: () => import("./views/PopularView.vue"),
   },
   {
+    path: "/genres",
+    name: "Genres",
+    component: () => import("./views/GenresView.vue"),
+  },
+  {
     path: "/movie/:id",
     name: "Movie details",
     component: () => import("./views/MovieDetails.vue"),
+  },
+  {
+    path: "/last-releases",
+    name: "Last releases",
+    component: () => import("./views/LastReleasesView.vue"),
   },
 ];
 

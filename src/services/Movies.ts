@@ -6,6 +6,7 @@ import {
   getVideoQueryById,
   getQueryBySearch,
   getMovieQueryById,
+  getGenresQuery,
 } from "./utils";
 
 export default {
@@ -26,6 +27,10 @@ export default {
     isSearchingMovie: boolean
   ) {
     const url = getQueryBySearch(searchOptions, isSearchingMovie);
+    return apiCall(url);
+  },
+  getGenres() {
+    const url = getGenresQuery();
     return apiCall(url);
   },
 };

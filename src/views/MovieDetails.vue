@@ -19,10 +19,13 @@
 
         <div class="md:grid md:grid-cols-12 gap-5">
           <div class="col-span-6 lg:col-span-9">
-            <h1 class="relative text-[18px] md:text-2xl lg:text-4xl">
+            <h1
+              id="movie__title"
+              class="relative text-[18px] md:text-2xl lg:text-4xl"
+            >
               {{ movie.title }}
             </h1>
-            <q class="relative text-cyan-200 text-[15px]">
+            <q v-if="movie.tagline" class="relative text-cyan-200 text-[15px]">
               {{ movie.tagline }}
             </q>
             <div class="relative mt-5">
@@ -59,14 +62,22 @@
               Budget:
               <span
                 class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{ movie.budget.toLocaleString() }}$</span
+                >{{
+                  movie.budget
+                    ? movie.budget.toLocaleString() + " $"
+                    : "unknown"
+                }}</span
               >
             </div>
             <div class="relative mt-5">
               Revenue:
               <span
                 class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{ movie.revenue.toLocaleString() }}$</span
+                >{{
+                  movie.revenue
+                    ? movie.revenue.toLocaleString() + " $"
+                    : "unknown"
+                }}</span
               >
             </div>
             <div class="relative mt-5">
@@ -88,8 +99,8 @@
               Runtime:
               <span
                 class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{ movie.runtime }} minutes</span
-              >
+                >{{ movie.runtime ? movie.runtime + " minutes" : "unknown" }}
+              </span>
             </div>
             <div class="relative mt-5">
               Vote average:
@@ -104,9 +115,12 @@
             <div class="relative mt-5 flex">
               Overview:
               <p
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-md text-cyan-200 text-justify max-h-[150px] md:max-h-[250px] overflow-auto"
+                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-md text-justify max-h-[150px] md:max-h-[250px] overflow-auto"
               >
-                {{ movie.overview }}
+                <span
+                  :class="movie.overview ? 'text-cyan-200' : 'text-red-300'"
+                  >{{ movie.overview || "No overview available" }}</span
+                >
               </p>
             </div>
           </div>
@@ -123,6 +137,7 @@
             />
             <button class="relative button__primary">Show trailer</button>
             <button
+              v-if="movie.homepage"
               class="relative button__secondary"
               @click="goTo(movie.homepage)"
             >
@@ -168,5 +183,3 @@ const getMovie = async () => {
 };
 onMounted(() => getMovie());
 </script>
-
-<style scoped></style>

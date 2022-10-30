@@ -4,11 +4,16 @@
       ref="carrousel"
       id="carrousel"
       class="fadeIn__slow bg-[#151515] shadow-lg mt-5"
+      @wheel="onScroll"
     >
       <div
-        v-for="{ backdrop_path, title } of movieStore.movies"
+        v-for="{ id, backdrop_path, title } of movieStore.movies"
         class="relative"
       >
+        <div
+          class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
+          @click="goTo(`/movie/${id}`)"
+        ></div>
         <img class="carrousel__img" :src="imageBaseUrl + backdrop_path" />
         <div class="blurring__title--primary">
           <small>{{ title }}</small>
@@ -80,10 +85,13 @@ import Spinner from "../components/Spinner.vue";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
 
 import { useMoviesStore } from "../stores/Movies";
+import { useNavigationStore } from "../stores/Navigation";
 
 import { imageBaseUrl } from "../utils";
 
 const movieStore = useMoviesStore();
+const { goTo } = useNavigationStore();
+
 const { movieOfTheWeek, trailerOfTheWeek } = storeToRefs(movieStore);
 const carrousel = ref();
 const dataLoaded = computed(
@@ -113,6 +121,11 @@ const animateScroll = () => {
       }
     }
   }, 24);
+};
+
+const onScroll = (event: WheelEvent) => {
+  console.log("Scrolling");
+  carrousel.value.scrollLeft += event.deltaY * 0.8;
 };
 
 onMounted(async () => {

@@ -17,6 +17,7 @@ export const useMoviesStore = defineStore("useMovies", {
     errorImage: noImage,
     movies: [] as MovieListModel[],
     movie: {} as MovieDetailsModel,
+    genres: [],
     artistResults: [] as ArtistModel[],
     movieOfTheWeek: undefined as undefined | MovieListModel,
     trailerOfTheWeek: undefined as undefined | MovieVideoModel,
@@ -62,6 +63,11 @@ export const useMoviesStore = defineStore("useMovies", {
             this.trailerOfTheWeek = res[0] as MovieVideoModel;
           }
         );
+      });
+    },
+    async getGenres() {
+      await MoviesServices.getGenres().then((res: any) => {
+        this.genres = res;
       });
     },
   },

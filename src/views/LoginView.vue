@@ -50,5 +50,3 @@ const { goTo } = useNavigationStore();
 // TODO: Login
 const login = () => goTo("/home");
 </script>
-
-<style scoped></style>

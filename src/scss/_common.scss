@@ -1,15 +1,21 @@
-h1,
+h1:not(#movie__title),
 h2,
 h3 {
   background: linear-gradient(120deg, #330d69, #30c9cd);
   filter: brightness(1.5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: Rajdhani-SemiBold;
 }
 
 h1 {
   @apply font-[Rajdhani-bold] text-4xl;
+}
+
+#movie__title {
+  background: linear-gradient(120deg, #22d3ee, #164e63);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  max-width: max-content;
 }
 
 h2 {

@@ -13,6 +13,24 @@ export const ONE_MONTH_AGO = formatDate(getDateAgo(30));
 let searchMovieUrl = `${BASE_URL}/search/movie?api_key=${TMDB_APIKEY}`;
 
 // Functions
+
+export function getMonthName(month: string) {
+  return {
+    "01": "JAN",
+    "02": "FEB",
+    "03": "MAR",
+    "04": "APR",
+    "05": "MAY",
+    "06": "JUN",
+    "07": "JUL",
+    "08": "AUG",
+    "09": "SEP",
+    "10": "OCT",
+    "11": "NOV",
+    "12": "DEC",
+  }[month];
+}
+
 export function getCurrentDay() {
   let millis = currentDate.getTime();
   let todayString = new Date(millis).toLocaleDateString("en-UK");
@@ -29,6 +47,13 @@ export function getDateAgo(days: number) {
 export function formatDate(date: string) {
   let [day, month, year] = date.split("/");
   return `${year}-${month}-${day}`;
+}
+
+// The user will see this date format
+export function parseDate(date: string) {
+  const months = {};
+  let [year, month, day] = date.split("-");
+  return `${day} ${getMonthName(month)} ${year}`;
 }
 
 export const apiCall = (url: string) => {
@@ -52,6 +77,8 @@ export const getQueryByOptions = (options: MovieAxiosOptions): string => {
     sort_by: "&sort_by=",
     year: "&year=",
     include_video: "&include_video=",
+    with_genres: "&with_genres=",
+    exclude_genres: "&exclude_genres=",
     "primary_release_date.gte": "&primary_release_date.gte=",
     "primary_release_date.lte": "&primary_release_date.lte=",
     "vote_average.gte": "&vote_average.gte=",
@@ -60,6 +87,9 @@ export const getQueryByOptions = (options: MovieAxiosOptions): string => {
     let query = queryOptions[option as keyof typeof queryOptions];
     let value = options[option as keyof typeof options];
     urlToSend += `${query}${value}`;
+  }
+  if (options.with_genres) {
+    urlToSend = urlToSend.replace("search/movie", "genre/movie/list");
   }
   return urlToSend;
 };
@@ -96,4 +126,7 @@ export const getVideoQueryById = (id: string | number): string => {
 
 export const getMovieQueryById = (id: string | number): string => {
   return `${BASE_URL}/movie/${id}?api_key=${TMDB_APIKEY}`;
+};
+export const getGenresQuery = (): string => {
+  return `${BASE_URL}/genre/movie/list?api_key=${TMDB_APIKEY}`;
 };

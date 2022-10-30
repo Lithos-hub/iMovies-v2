@@ -6,7 +6,6 @@
 
   color-scheme: light dark;
   color: #e3edf5;
-  background: linear-gradient(120deg, #071724f5, #1b1b1b);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,10 +22,13 @@
   height: 100vh;
 }
 
+html,
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: linear-gradient(120deg, #071724f5, #1b1b1b);
+  background: -webkit-linear-gradient(120deg, #071724f5, #1b1b1b);
 }
 
 h1 {
@@ -41,15 +43,15 @@ h1 {
   text-align: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #649bca;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     color: #649bca;
+//     background-color: #ffffff;
+//   }
+//   a:hover {
+//     color: #747bff;
+//   }
+//   button {
+//     background-color: #f9f9f9;
+//   }
+// }

@@ -22,6 +22,11 @@ export interface MovieAxiosOptions {
   year?: number | string;
   include_video?: boolean;
   query?: string;
+  with_genres?: number;
+  exclude_genres?: string;
+  "vote_average.gte"?: number | string;
+  "primary_release_date.gte"?: string;
+  "primary_release_date.lte"?: string;
 }
 
 export interface MovieVideoModel {

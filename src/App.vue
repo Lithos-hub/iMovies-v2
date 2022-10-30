@@ -1,13 +1,11 @@
 <template>
-  <Navbar v-if="user" />
+  <Navbar v-if="user && route.name !== 'Login'" />
   <router-view></router-view>
 </template>
 
 <script setup lang="ts">
-import { createApp, watch, onMounted } from "vue";
+import { watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
-
-import App from "./App.vue";
 
 import Navbar from "./components/Navbar.vue";
 
@@ -30,5 +28,3 @@ onMounted(() => {
   window.onresize = getScreenType;
 });
 </script>
-
-<style scoped></style>
