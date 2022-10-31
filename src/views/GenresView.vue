@@ -9,11 +9,15 @@
       <article
         v-for="({ genreName, movies }, i) of getSorted(moviesByGenre)"
         :key="i"
-        class="relative font-bold border border-[#202020] hover:bg-cyan-900 hover:bg-opacity-20 cursor-pointer duration-200"
+        class="relative font-bold border border-[#202020] hover:bg-cyan-900 hover:bg-opacity-20 hover:brightness-150 cursor-pointer duration-200"
         @click="openDialog(genreName, movies)"
       >
         <img
-          :src="imageBaseUrl + movies[i].backdrop_path"
+          :src="
+            movies[i].backdrop_path
+              ? imageBaseUrl + movies[i].backdrop_path
+              : errorImagePan
+          "
           class="relative brightness-50 object-cover w-full"
         />
         <div
@@ -79,7 +83,7 @@ import Dialog from "../components/Dialog.vue";
 import { useNavigationStore } from "../stores/Navigation";
 
 const movieStore = useMoviesStore();
-const { movies, errorImage } = storeToRefs(movieStore);
+const { movies, errorImage, errorImagePan } = storeToRefs(movieStore);
 const { goTo } = useNavigationStore();
 
 const moviesByGenre: Ref<Record<string, any>[]> = ref([]);

@@ -8,6 +8,7 @@ import MoviesServices from "../services/Movies";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
 
 import noImage from "../assets/img/no-image.jpg";
+import noImagePan from "../assets/img/no-image-pan.jpg";
 
 import { ONE_WEEK_AGO, CURRENT_DATE } from "../services/utils";
 import { ArtistModel } from "../models/interfaces/Artist";
@@ -15,6 +16,7 @@ import { ArtistModel } from "../models/interfaces/Artist";
 export const useMoviesStore = defineStore("useMovies", {
   state: () => ({
     errorImage: noImage,
+    errorImagePan: noImagePan,
     movies: [] as MovieListModel[],
     movie: {} as MovieDetailsModel,
     genres: [],
