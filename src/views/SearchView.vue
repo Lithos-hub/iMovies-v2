@@ -1,5 +1,6 @@
 <template>
   <main class="mt-[50px]">
+    <MenuFloat v-if="showFloatMenu" />
     <h1>Search movies or artists</h1>
     <SearchInput
       placeholder="Search by movie title, artist name, etc"
@@ -25,7 +26,7 @@
             >
               <div
                 class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-                @click="goTo(`/movie/${id}`)"
+                @click="open(id, $event)"
               ></div>
               <img
                 :src="poster_path ? imageBaseUrl + poster_path : errorImage"
@@ -59,7 +60,6 @@
               </div>
               <div
                 class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-                @click="goTo(`/movie/${id}`)"
               ></div>
               <img
                 :src="profile_path ? imageBaseUrl + profile_path : errorImage"
@@ -86,17 +86,22 @@ import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 
 import { useMoviesStore } from "../stores/Movies";
+import { useNavigationStore } from "../stores/Navigation";
 
 import { imageBaseUrl } from "../utils";
 
 import Spinner from "../components/Spinner.vue";
 import SearchInput from "../components/SearchInput.vue";
-import { useNavigationStore } from "../stores/Navigation";
+import MenuFloat from "../components/FloatMenu.vue";
+import { useFloatMenuStore } from "../stores/FloatMenu";
 
 const movieStore = useMoviesStore();
 const { goTo } = useNavigationStore();
 
 const { movies, artistResults, errorImage } = storeToRefs(movieStore);
+const floatMenuStore = useFloatMenuStore();
+const { open } = useFloatMenuStore();
+const { showFloatMenu } = storeToRefs(floatMenuStore);
 
 const dataLoaded = computed(
   () => movies.value.length > 0 || artistResults.value.length

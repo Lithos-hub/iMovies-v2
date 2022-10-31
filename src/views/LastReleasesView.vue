@@ -1,5 +1,6 @@
 <template>
   <main class="mt-[50px]">
+    <MenuFloat v-if="showFloatMenu" />
     <h1>Last releases</h1>
     <section
       data-testid="data-results"
@@ -14,7 +15,7 @@
         >
           <div
             class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-            @click="goTo(`/movie/${id}`)"
+            @click="open(id, $event)"
           ></div>
           <div
             class="bg-[#202020] p-2 absolute top-0 left-0 w-full text-center rounded-t-md"
@@ -49,12 +50,16 @@ import { CURRENT_DATE, ONE_MONTH_AGO, parseDate } from "../services/utils";
 import { imageBaseUrl } from "../utils";
 
 import { useMoviesStore } from "../stores/Movies";
-import { useNavigationStore } from "../stores/Navigation";
+import { useFloatMenuStore } from "../stores/FloatMenu";
+
+import MenuFloat from "../components/FloatMenu.vue";
 
 import Spinner from "../components/Spinner.vue";
 
 const movieStore = useMoviesStore();
-const { goTo } = useNavigationStore();
+const floatMenuStore = useFloatMenuStore();
+const { open } = useFloatMenuStore();
+const { showFloatMenu } = storeToRefs(floatMenuStore);
 
 const { movies, errorImage } = storeToRefs(movieStore);
 

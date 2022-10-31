@@ -1,5 +1,6 @@
 <template>
   <main class="mt-[50px]">
+    <MenuFloat v-if="showFloatMenu" />
     <h1>Movies by genre</h1>
     <section
       data-testid="data-results"
@@ -47,7 +48,7 @@
         >
           <div
             class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-            @click="goTo(`/movie/${id}`)"
+            @click="open(id, $event)"
           ></div>
           <img
             :src="poster_path ? imageBaseUrl + poster_path : errorImage"
@@ -74,17 +75,21 @@ import { movieGenres } from "../utils";
 import { imageBaseUrl } from "../utils";
 
 import { useMoviesStore } from "../stores/Movies";
+import { useFloatMenuStore } from "../stores/FloatMenu";
 import { storeToRefs } from "pinia";
 
 import { MovieListModel } from "../models/interfaces/Movie";
 
+import MenuFloat from "../components/FloatMenu.vue";
 import Spinner from "../components/Spinner.vue";
 import Dialog from "../components/Dialog.vue";
-import { useNavigationStore } from "../stores/Navigation";
 
 const movieStore = useMoviesStore();
+const floatMenuStore = useFloatMenuStore();
+const { open } = useFloatMenuStore();
+
 const { movies, errorImage, errorImagePan } = storeToRefs(movieStore);
-const { goTo } = useNavigationStore();
+const { showFloatMenu } = storeToRefs(floatMenuStore);
 
 const moviesByGenre: Ref<Record<string, any>[]> = ref([]);
 

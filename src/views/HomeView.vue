@@ -1,5 +1,6 @@
 <template>
   <section v-if="dataLoaded">
+    <MenuFloat v-if="showFloatMenu" />
     <div
       ref="carrousel"
       id="carrousel"
@@ -12,7 +13,7 @@
       >
         <div
           class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-          @click="goTo(`/movie/${id}`)"
+          @click="open(id, $event)"
         ></div>
         <img class="carrousel__img" :src="imageBaseUrl + backdrop_path" />
         <div class="blurring__title--primary">
@@ -42,7 +43,12 @@
                 />
               </div>
               <div class="col-span-2">
-                <h4 class="mb-5">{{ movieOfTheWeek?.title }}</h4>
+                <h4
+                  class="mb-5 cursor-pointer hover:text-white hover:underline duration-200"
+                  @click="goTo(`movie/${String(movieOfTheWeek?.id)}`)"
+                >
+                  {{ movieOfTheWeek?.title }}
+                </h4>
                 <small>Release date: {{ movieOfTheWeek?.release_date }}</small>
                 <div class="grid grid-cols-2 mt-5">
                   <div class="text-sm">Vote average</div>
@@ -81,16 +87,22 @@
 import { storeToRefs } from "pinia";
 import { onMounted, ref, computed } from "vue";
 
-import Spinner from "../components/Spinner.vue";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
+import { useFloatMenuStore } from "../stores/FloatMenu";
 
 import { useMoviesStore } from "../stores/Movies";
 import { useNavigationStore } from "../stores/Navigation";
+
+import Spinner from "../components/Spinner.vue";
+import MenuFloat from "../components/FloatMenu.vue";
 
 import { imageBaseUrl } from "../utils";
 
 const movieStore = useMoviesStore();
 const { goTo } = useNavigationStore();
+const floatMenuStore = useFloatMenuStore();
+const { open } = useFloatMenuStore();
+const { showFloatMenu } = storeToRefs(floatMenuStore);
 
 const { movieOfTheWeek, trailerOfTheWeek } = storeToRefs(movieStore);
 const carrousel = ref();
