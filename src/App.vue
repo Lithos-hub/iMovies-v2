@@ -12,16 +12,21 @@ import Navbar from "./components/Navbar.vue";
 import { useUserStore } from "./stores/User";
 import { useMediaStore } from "./stores/Media";
 import { useMoviesStore } from "./stores/Movies";
+import { useFloatMenuStore } from "./stores/FloatMenu";
 
 const { user } = useUserStore();
 const { getScreenType } = useMediaStore();
 const movieStore = useMoviesStore();
+const floatMenuStore = useFloatMenuStore();
 
 const route = useRoute();
 
 watch(
   () => route.path,
-  () => movieStore.$reset()
+  () => {
+    movieStore.$reset();
+    floatMenuStore.$reset();
+  }
 );
 
 onMounted(() => {

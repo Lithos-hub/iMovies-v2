@@ -135,7 +135,12 @@
               "
               class="hidden md:block relative rounded-[15px] shadow-lg w-full max-w-[400px] h-auto"
             />
-            <button class="relative button__primary">Show trailer</button>
+            <button
+              class="relative button__primary"
+              @click="goTo(`/movie/${id}/video`)"
+            >
+              Show trailer
+            </button>
             <button
               v-if="movie.homepage"
               class="relative button__secondary"
@@ -166,18 +171,20 @@ import { storeToRefs } from "pinia";
 import { useMoviesStore } from "../stores/Movies";
 
 import Spinner from "../components/Spinner.vue";
+import { useNavigationStore } from "../stores/Navigation";
 
+const route = useRoute();
 const movieStore = useMoviesStore();
+const { goTo } = useNavigationStore();
+const id = route.params.id;
 
 const { movie, errorImage } = storeToRefs(movieStore);
-const route = useRoute();
 
 const isLoading = ref(true);
 const dataLoaded = computed(() => Object.keys(movie.value).length > 0);
 
-const goTo = (path: string) => window.open(path, "_blank");
 const getMovie = async () => {
-  await movieStore.getMovieDetails(route.params.id as string).then(() => {
+  await movieStore.getMovieDetails(id as string).then(() => {
     isLoading.value = false;
   });
 };

@@ -21,6 +21,10 @@ export const navbarMenuLinks = [
     name: "By genres",
     path: "/genres",
   },
+  {
+    name: "Trailers",
+    path: "/trailers",
+  },
   // {
   //   name: "My movies",
   //   path: "/my-movies",

@@ -136,7 +136,6 @@ const animateScroll = () => {
 };
 
 const onScroll = (event: WheelEvent) => {
-  console.log("Scrolling");
   carrousel.value.scrollLeft += event.deltaY * 0.8;
 };
 

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import {
   MovieDetailsModel,
   MovieListModel,
+  MovieVideoMinModel,
   MovieVideoModel,
 } from "../models/interfaces/Movie";
 import MoviesServices from "../services/Movies";
@@ -20,6 +21,8 @@ export const useMoviesStore = defineStore("useMovies", {
     movies: [] as MovieListModel[],
     movie: {} as MovieDetailsModel,
     genres: [],
+    trailers: [] as MovieVideoMinModel[],
+    movieTrailer: {} as MovieVideoModel,
     artistResults: [] as ArtistModel[],
     movieOfTheWeek: undefined as undefined | MovieListModel,
     trailerOfTheWeek: undefined as undefined | MovieVideoModel,
@@ -65,6 +68,20 @@ export const useMoviesStore = defineStore("useMovies", {
             this.trailerOfTheWeek = res[0] as MovieVideoModel;
           }
         );
+      });
+    },
+    async getMovieTrailers(id: number, title: string) {
+      await MoviesServices.getMovieTrailer(id).then((res: any) => {
+        this.trailers.push({
+          id,
+          title,
+          trailer_key: res[0].key,
+        });
+      });
+    },
+    async getMovieTrailer(id: number | string) {
+      await MoviesServices.getMovieTrailer(id).then((res: any) => {
+        this.movieTrailer = res[0];
       });
     },
     async getGenres() {

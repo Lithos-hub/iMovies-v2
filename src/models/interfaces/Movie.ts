@@ -42,6 +42,12 @@ export interface MovieVideoModel {
   type: string;
 }
 
+export interface MovieVideoMinModel {
+  id: string | number;
+  title: string;
+  trailer_key: string;
+}
+
 export interface MovieDetailsModel {
   adult: boolean;
   backdrop_path: string;
