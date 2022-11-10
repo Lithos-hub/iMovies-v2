@@ -1,6 +1,11 @@
-# Vue 3 + TypeScript + Vite
+# iMovies v2
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Fullstack version of my app iMovies which was made with Vue 2 + Vuetify and Firebase.
+
+It uses MEVN stack:
+
+- Vue 3, Vite, Pinia, TypeScript and Tailwind CSS and testing for the frontend.
+- Node, Express, TypeScript and MongoDB for the backend (visit [iMovies v2 API](https://github.com/Lithos-hub/iMovies-v2-API) repo).
 
 ## Recommended IDE Setup
 
