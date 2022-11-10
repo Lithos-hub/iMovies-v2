@@ -1,23 +1,32 @@
 <template>
   <main
     ref="floatMenu"
-    :class="`fixed z-50`"
+    class="fixed z-50"
     :style="`top: ${clientY}px; left: ${clientX}px`"
   >
     <div class="bg-[#202020] pa-5 w-[200px] rounded-md">
-      <ul class="border border-cyan-900 rounded-md">
+      <ul class="border border-cyan-900 rounded-md" v-if="!items">
         <li
-          class="p-2 border border-transparent hover:bg-cyan-900 hover:bg-opacity-50 duration-200 cursor-pointer rounded-t-md text-left"
+          class="movieFloatMenuItem rounded-t-md"
           @click="goTo(`movie/${id}`)"
         >
           Show details
         </li>
         <hr />
         <li
-          class="p-2 border border-transparent hover:bg-cyan-900 hover:bg-opacity-50 duration-200 cursor-pointer rounded-b-md text-left"
+          class="movieFloatMenuItem rounded-b-md"
           @click="goTo(`movie/${id}/video`)"
         >
           Show trailer
+        </li>
+      </ul>
+      <ul v-else class="border border-blue-900 rounded-md">
+        <li
+          class="defaultFloatMenuItem"
+          v-for="{ name, path } of items"
+          @click="goTo(path)"
+        >
+          {{ name }}
         </li>
       </ul>
     </div>
@@ -25,7 +34,10 @@
   <div
     id="overlay"
     class="z-40 fixed top-0 left-0 w-full h-full"
-    @click="showFloatMenu = false"
+    @click="
+      showFloatMenu = false;
+      showDefaultFloatMenu = false;
+    "
   ></div>
 </template>
 
@@ -36,9 +48,16 @@ import { storeToRefs } from "pinia";
 import { useFloatMenuStore } from "../stores/FloatMenu";
 import { useNavigationStore } from "../stores/Navigation";
 
+import { Link } from "../models/types/Link";
+
+defineProps<{
+  items?: Link[];
+}>();
+
 const floatMenuStore = useFloatMenuStore();
 const { id } = useFloatMenuStore();
-const { clientX, clientY, showFloatMenu } = storeToRefs(floatMenuStore);
+const { clientX, clientY, showFloatMenu, showDefaultFloatMenu } =
+  storeToRefs(floatMenuStore);
 const { goTo } = useNavigationStore();
 
 const floatMenu = ref();
@@ -50,5 +69,3 @@ onMounted(() => {
   });
 });
 </script>
-
-<style scoped></style>

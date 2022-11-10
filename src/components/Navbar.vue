@@ -1,9 +1,10 @@
 <template>
   <div v-if="screen !== 'sm'" class="navbar">
-    <ul class="flex justify-around align-middle">
+    <ul class="flex justify-between align-middle px-2">
+      <!-- NAVBAR MENU ITEMS -->
       <li
         class="cursor-pointer hover:-hue-rotate-30 hover:brightness-125 duration-200"
-        @click="goTo('/home')"
+        @click="goTo('/')"
       >
         <h1>iMovies</h1>
       </li>
@@ -14,6 +15,24 @@
       >
         {{ name }}
       </li>
+      <!-- USER IS LOGGED -->
+      <li
+        v-if="user"
+        @click="open($event, true)"
+        class="navbar__link text-[13px]"
+      >
+        <i
+          class="fa-solid fa-user border border-cyan-500 text-cyan-500 p-2 rounded-full"
+        ></i>
+      </li>
+      <!-- USER IS NOT LOGGED -->
+      <button
+        v-else
+        class="button__tertiary text-[13px]"
+        @click="goTo('/access')"
+      >
+        Sign in
+      </button>
     </ul>
   </div>
   <div v-else class="flex flex-col justify-center">
@@ -37,18 +56,33 @@
       </div>
     </Transition>
   </div>
+  <FloatMenu v-if="showDefaultFloatMenu" :items="accountMenuItems" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-
-import { navbarMenuLinks } from "../utils";
-import { useNavigationStore } from "../stores/Navigation";
-import { useMediaStore } from "../stores/Media";
 import { useRoute } from "vue-router";
 
+import { navbarMenuLinks, accountMenuItems } from "../utils";
+
+import { useNavigationStore } from "../stores/Navigation";
+import { useMediaStore } from "../stores/Media";
+import { useFloatMenuStore } from "../stores/FloatMenu";
+
+import FloatMenu from "../components/FloatMenu.vue";
+import { storeToRefs } from "pinia";
+import { useUserStore } from "../stores/User";
+
 const { goTo } = useNavigationStore();
+
+const { user } = useUserStore();
+
 const mediaStore = useMediaStore();
+
+const floatMenuStore = useFloatMenuStore();
+const { open } = useFloatMenuStore();
+
+const { showDefaultFloatMenu } = storeToRefs(floatMenuStore);
 
 const route = useRoute();
 

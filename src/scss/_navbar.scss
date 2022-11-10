@@ -8,4 +8,11 @@
 
 .navbar__link {
   @apply px-10 hover:bg-cyan-800 rounded-md cursor-pointer duration-200 my-auto py-2;
+
+  &:hover {
+    i {
+      color: white;
+      border: 1px solid white;
+    }
+  }
 }

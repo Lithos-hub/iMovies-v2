@@ -21,7 +21,7 @@
 <script setup lang="ts">
 defineEmits(["update:modelValue", "search"]);
 
-const props = defineProps({
+defineProps({
   placeholder: {
     type: String,
   },

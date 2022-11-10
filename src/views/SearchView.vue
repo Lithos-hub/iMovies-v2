@@ -1,84 +1,78 @@
 <template>
-  <main class="mt-[50px]">
-    <MenuFloat v-if="showFloatMenu" />
-    <h1>Search movies or artists</h1>
-    <SearchInput
-      placeholder="Search by movie title, artist name, etc"
-      variant="secondary"
-      class="mt-5"
-      @search="onPressEnter($event as Event)"
-    />
-    <section
-      data-testid="data-results"
-      class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
-      v-if="dataLoaded"
-    >
-      <div class="grid grid-cols-2 gap-5 justify-items-center">
-        <article>
-          <h1>Movies</h1>
+  <MenuFloat v-if="showFloatMenu" />
+  <h1>Search movies or artists</h1>
+  <SearchInput
+    placeholder="Search by movie title, artist name, etc"
+    variant="secondary"
+    class="mt-5"
+    @search="onPressEnter($event as Event)"
+  />
+  <section
+    data-testid="data-results"
+    class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
+    v-if="dataLoaded"
+  >
+    <div class="grid grid-cols-2 gap-5 justify-items-center">
+      <article>
+        <h1>Movies</h1>
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div
-            class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+            v-for="{ id, title, poster_path } of movies"
+            :key="id"
+            class="relative w-full"
           >
             <div
-              v-for="{ id, title, poster_path } of movies"
-              :key="id"
-              class="relative w-full"
-            >
-              <div
-                class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-                @click="open(id, $event)"
-              ></div>
-              <img
-                :src="poster_path ? imageBaseUrl + poster_path : errorImage"
-                class="w-full rounded-md"
-              />
-              <div class="blurring__title--primary rounded-b-md">
-                <small>{{ title }}</small>
-              </div>
+              class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
+              @click="open($event, false, id)"
+            ></div>
+            <img
+              :src="poster_path ? imageBaseUrl + poster_path : errorImage"
+              class="w-full rounded-md"
+            />
+            <div class="blurring__title--primary rounded-b-md">
+              <small>{{ title }}</small>
             </div>
           </div>
-        </article>
-        <article>
-          <h1>Artists</h1>
+        </div>
+      </article>
+      <article>
+        <h1>Artists</h1>
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div
-            class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+            v-for="{
+              id,
+              name,
+              known_for_department,
+              profile_path,
+            } of artistResults"
+            :key="id"
+            class="relative w-full"
           >
             <div
-              v-for="{
-                id,
-                name,
-                known_for_department,
-                profile_path,
-              } of artistResults"
-              :key="id"
-              class="relative w-full"
+              class="absolute top-0 left-0 w-full text-left pl-2 bg-[#202020] rounded-t-md"
             >
-              <div
-                class="absolute top-0 left-0 w-full text-left pl-2 bg-[#202020] rounded-t-md"
-              >
-                {{ known_for_department }}
-              </div>
-              <div
-                class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-              ></div>
-              <img
-                :src="profile_path ? imageBaseUrl + profile_path : errorImage"
-                class="w-full rounded-md"
-              />
-              <div class="blurring__title--secondary rounded-b-md">
-                <small>{{ name }}</small>
-              </div>
+              {{ known_for_department }}
+            </div>
+            <div
+              class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
+            ></div>
+            <img
+              :src="profile_path ? imageBaseUrl + profile_path : errorImage"
+              class="w-full rounded-md"
+            />
+            <div class="blurring__title--secondary rounded-b-md">
+              <small>{{ name }}</small>
             </div>
           </div>
-        </article>
-      </div>
-    </section>
-    <div v-if="isLoading && !dataLoaded">
-      <Spinner
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-      />
+        </div>
+      </article>
     </div>
-  </main>
+  </section>
+  <div v-if="isLoading && !dataLoaded">
+    <Spinner
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">

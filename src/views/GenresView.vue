@@ -1,35 +1,33 @@
 <template>
-  <main class="mt-[50px]">
-    <MenuFloat v-if="showFloatMenu" />
-    <h1>Movies by genre</h1>
-    <section
-      data-testid="data-results"
-      class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg text-right grid md:grid-cols-3 gap-2"
-      v-if="dataLoaded"
+  <MenuFloat v-if="showFloatMenu" />
+  <h1>Movies by genre</h1>
+  <section
+    data-testid="data-results"
+    class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg text-right grid md:grid-cols-3 gap-2"
+    v-if="dataLoaded"
+  >
+    <article
+      v-for="({ genreName, movies }, i) of getSorted(moviesByGenre)"
+      :key="i"
+      class="relative font-bold border border-[#202020] hover:bg-cyan-900 hover:bg-opacity-20 hover:brightness-150 cursor-pointer duration-200"
+      @click="openDialog(genreName, movies)"
     >
-      <article
-        v-for="({ genreName, movies }, i) of getSorted(moviesByGenre)"
-        :key="i"
-        class="relative font-bold border border-[#202020] hover:bg-cyan-900 hover:bg-opacity-20 hover:brightness-150 cursor-pointer duration-200"
-        @click="openDialog(genreName, movies)"
+      <img
+        :src="
+          movies[i].backdrop_path
+            ? imageBaseUrl + movies[i].backdrop_path
+            : errorImagePan
+        "
+        class="relative brightness-50 object-cover w-full"
+      />
+      <div
+        id="genre__name"
+        class="absolute bottom-0 left-0 text-center text-[2rem] lg:text-[3rem] w-full p-3 font-bold uppercase"
       >
-        <img
-          :src="
-            movies[i].backdrop_path
-              ? imageBaseUrl + movies[i].backdrop_path
-              : errorImagePan
-          "
-          class="relative brightness-50 object-cover w-full"
-        />
-        <div
-          id="genre__name"
-          class="absolute bottom-0 left-0 text-center text-[2rem] lg:text-[3rem] w-full p-3 font-bold uppercase"
-        >
-          {{ genreName }}
-        </div>
-      </article>
-    </section>
-  </main>
+        {{ genreName }}
+      </div>
+    </article>
+  </section>
   <Dialog
     v-if="showDialog"
     :title="selected_genre"
@@ -48,7 +46,7 @@
         >
           <div
             class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-            @click="open(id, $event)"
+            @click="open($event, false, id)"
           ></div>
           <img
             :src="poster_path ? imageBaseUrl + poster_path : errorImage"

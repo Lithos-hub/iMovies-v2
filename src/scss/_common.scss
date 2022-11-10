@@ -45,3 +45,15 @@ hr {
 .blurring__title--secondary {
   @apply absolute bottom-0 left-0 text-[20px] md:text-[18px] lg:text-[16px] w-full bg-indigo-900 bg-opacity-50 backdrop-blur-sm;
 }
+
+.movieFloatMenuItem {
+  @apply p-2 border border-transparent hover:bg-cyan-900 hover:bg-opacity-50 duration-200 cursor-pointer text-left;
+}
+
+.defaultFloatMenuItem {
+  @apply p-2 border border-transparent hover:bg-blue-900 hover:bg-opacity-50 duration-200 cursor-pointer text-left;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}

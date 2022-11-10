@@ -13,7 +13,7 @@
       >
         <div
           class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-          @click="open(id, $event)"
+          @click="open($event, false, id)"
         ></div>
         <img class="carrousel__img" :src="imageBaseUrl + backdrop_path" />
         <div class="blurring__title--primary">
@@ -49,7 +49,10 @@
                 >
                   {{ movieOfTheWeek?.title }}
                 </h4>
-                <small>Release date: {{ movieOfTheWeek?.release_date }}</small>
+                <small
+                  >Release date:
+                  {{ parseDate(movieOfTheWeek?.release_date as string) }}</small
+                >
                 <div class="grid grid-cols-2 mt-5">
                   <div class="text-sm">Vote average</div>
                   <div class="text-sm">Vote account</div>
@@ -97,6 +100,7 @@ import Spinner from "../components/Spinner.vue";
 import MenuFloat from "../components/FloatMenu.vue";
 
 import { imageBaseUrl } from "../utils";
+import { parseDate } from "../services/utils";
 
 const movieStore = useMoviesStore();
 const { goTo } = useNavigationStore();

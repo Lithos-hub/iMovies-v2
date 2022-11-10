@@ -1,6 +1,8 @@
 <template>
-  <Navbar v-if="user && route.name !== 'Login'" />
-  <router-view></router-view>
+  <Navbar />
+  <main class="mt-5">
+    <router-view></router-view>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -33,3 +35,5 @@ onMounted(() => {
   window.onresize = getScreenType;
 });
 </script>
+
+<style lang="scss"></style>

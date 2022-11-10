@@ -2,10 +2,6 @@ export const imageBaseUrl = "https://image.tmdb.org/t/p/original";
 
 export const navbarMenuLinks = [
   {
-    name: "Home",
-    path: "/home",
-  },
-  {
     name: "Search",
     path: "/search",
   },
@@ -18,21 +14,32 @@ export const navbarMenuLinks = [
     path: "/last-releases",
   },
   {
-    name: "By genres",
+    name: "By genre",
     path: "/genres",
   },
   {
     name: "Trailers",
     path: "/trailers",
   },
-  // {
-  //   name: "My movies",
-  //   path: "/my-movies",
-  // },
-  // {
-  //   name: "About",
-  //   path: "/about",
-  // },
+];
+
+export const accountMenuItems = [
+  {
+    name: "Account settings",
+    path: "/account",
+  },
+  {
+    name: "My movies",
+    path: "/my-movies",
+  },
+  {
+    name: "About",
+    path: "/about",
+  },
+  {
+    name: "Logout",
+    path: "/logout",
+  },
 ];
 
 export const movieGenres = [
