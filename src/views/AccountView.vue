@@ -2,7 +2,7 @@
   <h1>Account settings</h1>
   <section
     v-if="user"
-    data-testid="data-results"
+    data-testid="wrapper"
     class="relative container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg md:text-left"
   >
     <div class="flex flex-col md:grid md:grid-cols-12">

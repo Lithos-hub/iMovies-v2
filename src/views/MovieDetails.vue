@@ -1,164 +1,155 @@
 <template>
-  <main>
-    <section
-      data-testid="data-results"
-      class="container mt-10 rounded-[15px] relative mx-auto bg-[#050505]"
-      v-if="dataLoaded"
+  <section
+    data-testid="wrapper"
+    class="container mt-10 rounded-[15px] relative mx-auto bg-[#050505]"
+    v-if="dataLoaded"
+  >
+    <div
+      class="bg-gradient-to-b text-left p-5 from-cyan-900 to-[#050505] rounded-[15px] relative top-0 left-0 w-full h-[800px]"
     >
-      <div
-        class="bg-gradient-to-b text-left p-5 from-cyan-900 to-[#050505] rounded-[15px] relative top-0 left-0 w-full h-[800px]"
-      >
-        <img
-          :src="
-            movie.backdrop_path
-              ? imageBaseUrl + movie.backdrop_path
-              : errorImage
-          "
-          class="absolute top-0 left-0 mix-blend-multiply rounded-[15px] h-full w-full object-cover"
-        />
+      <img
+        :src="
+          movie.backdrop_path ? imageBaseUrl + movie.backdrop_path : errorImage
+        "
+        class="absolute top-0 left-0 mix-blend-multiply rounded-[15px] h-full w-full object-cover"
+      />
 
-        <div class="md:grid md:grid-cols-12 gap-5">
-          <div class="col-span-6 lg:col-span-9">
-            <h1
-              id="movie__title"
-              class="relative text-[18px] md:text-2xl lg:text-4xl"
-            >
-              {{ movie.title }}
-            </h1>
-            <q v-if="movie.tagline" class="relative text-cyan-200 text-[15px]">
-              {{ movie.tagline }}
-            </q>
-            <div class="relative mt-5">
-              Release date:
-              <span
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{ movie.release_date }}</span
-              >
-            </div>
-            <div class="relative mt-5">
-              Genres:
-              <span
-                v-for="{ name } of movie.genres"
-                class="bg-[#050505] bg-opacity-70 p-1 mx-1 px-5 rounded-full text-cyan-200"
-                >{{ name }}</span
-              >
-            </div>
-            <div class="relative mt-5">
-              Spoken languages:
-              <span
-                v-for="{ english_name } of movie.spoken_languages"
-                class="bg-[#050505] bg-opacity-70 p-1 mx-1 px-5 rounded-full text-cyan-200"
-                >{{ english_name }}</span
-              >
-            </div>
-            <div class="relative mt-5">
-              Original language:
-              <span
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200 uppercase"
-                >{{ movie.original_language }}</span
-              >
-            </div>
-            <div class="relative mt-5">
-              Budget:
-              <span
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{
-                  movie.budget
-                    ? movie.budget.toLocaleString() + " $"
-                    : "unknown"
-                }}</span
-              >
-            </div>
-            <div class="relative mt-5">
-              Revenue:
-              <span
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{
-                  movie.revenue
-                    ? movie.revenue.toLocaleString() + " $"
-                    : "unknown"
-                }}</span
-              >
-            </div>
-            <div class="relative mt-5">
-              Profit:
-              <span
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full"
-                ><span
-                  :class="
-                    movie.revenue - movie.budget > 0
-                      ? 'text-green-300'
-                      : 'text-red-300'
-                  "
-                  >{{ (movie.revenue - movie.budget).toLocaleString() }}</span
-                >
-                $</span
-              >
-            </div>
-            <div class="relative mt-5">
-              Runtime:
-              <span
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{ movie.runtime ? movie.runtime + " minutes" : "unknown" }}
-              </span>
-            </div>
-            <div class="relative mt-5">
-              Vote average:
-              <span
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-                >{{ movie.vote_average }}
-                <span class="text-cyan-50"
-                  >({{ movie.vote_count.toLocaleString() }} votes)</span
-                ></span
-              >
-            </div>
-            <div class="relative mt-5 flex">
-              Overview:
-              <p
-                class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-md text-justify max-h-[150px] md:max-h-[250px] overflow-auto"
-              >
-                <span
-                  :class="movie.overview ? 'text-cyan-200' : 'text-red-300'"
-                  >{{ movie.overview || "No overview available" }}</span
-                >
-              </p>
-            </div>
-          </div>
-          <div
-            class="justify-self-end col-span-6 lg:col-span-3 mt-5 md:mt-0 text-center flex flex-col gap-5"
+      <div class="md:grid md:grid-cols-12 gap-5">
+        <div class="col-span-6 lg:col-span-9">
+          <h1
+            id="movie__title"
+            class="relative text-[18px] md:text-2xl lg:text-4xl"
           >
-            <img
-              :src="
-                movie.poster_path
-                  ? imageBaseUrl + movie.poster_path
-                  : errorImage
-              "
-              class="hidden md:block relative rounded-[15px] shadow-lg w-full max-w-[400px] h-auto"
-            />
-            <button
-              class="relative button__primary"
-              @click="goTo(`/movie/${id}/video`)"
+            {{ movie.title }}
+          </h1>
+          <q v-if="movie.tagline" class="relative text-cyan-200 text-[15px]">
+            {{ movie.tagline }}
+          </q>
+          <div class="relative mt-5">
+            Release date:
+            <span
+              class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
+              >{{ movie.release_date }}</span
             >
-              Show trailer
-            </button>
-            <button
-              v-if="movie.homepage"
-              class="relative button__secondary"
-              @click="goTo(movie.homepage)"
+          </div>
+          <div class="relative mt-5">
+            Genres:
+            <span
+              v-for="{ name } of movie.genres"
+              class="bg-[#050505] bg-opacity-70 p-1 mx-1 px-5 rounded-full text-cyan-200"
+              >{{ name }}</span
             >
-              Visit webpage
-            </button>
+          </div>
+          <div class="relative mt-5">
+            Spoken languages:
+            <span
+              v-for="{ english_name } of movie.spoken_languages"
+              class="bg-[#050505] bg-opacity-70 p-1 mx-1 px-5 rounded-full text-cyan-200"
+              >{{ english_name }}</span
+            >
+          </div>
+          <div class="relative mt-5">
+            Original language:
+            <span
+              class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200 uppercase"
+              >{{ movie.original_language }}</span
+            >
+          </div>
+          <div class="relative mt-5">
+            Budget:
+            <span
+              class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
+              >{{
+                movie.budget ? movie.budget.toLocaleString() + " $" : "unknown"
+              }}</span
+            >
+          </div>
+          <div class="relative mt-5">
+            Revenue:
+            <span
+              class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
+              >{{
+                movie.revenue
+                  ? movie.revenue.toLocaleString() + " $"
+                  : "unknown"
+              }}</span
+            >
+          </div>
+          <div class="relative mt-5">
+            Profit:
+            <span class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full"
+              ><span
+                :class="
+                  movie.revenue - movie.budget > 0
+                    ? 'text-green-300'
+                    : 'text-red-300'
+                "
+                >{{ (movie.revenue - movie.budget).toLocaleString() }}</span
+              >
+              $</span
+            >
+          </div>
+          <div class="relative mt-5">
+            Runtime:
+            <span
+              class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
+              >{{ movie.runtime ? movie.runtime + " minutes" : "unknown" }}
+            </span>
+          </div>
+          <div class="relative mt-5">
+            Vote average:
+            <span
+              class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
+              >{{ movie.vote_average }}
+              <span class="text-cyan-50"
+                >({{ movie.vote_count.toLocaleString() }} votes)</span
+              ></span
+            >
+          </div>
+          <div class="relative mt-5 flex">
+            Overview:
+            <p
+              class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-md text-justify max-h-[150px] md:max-h-[250px] overflow-auto"
+            >
+              <span
+                :class="movie.overview ? 'text-cyan-200' : 'text-red-300'"
+                >{{ movie.overview || "No overview available" }}</span
+              >
+            </p>
           </div>
         </div>
+        <div
+          class="justify-self-end col-span-6 lg:col-span-3 mt-5 md:mt-0 text-center flex flex-col gap-5"
+        >
+          <img
+            :src="
+              movie.poster_path ? imageBaseUrl + movie.poster_path : errorImage
+            "
+            class="hidden md:block relative rounded-[15px] shadow-lg w-full max-w-[400px] h-auto"
+          />
+          <button
+            class="relative button__primary"
+            @click="goTo(`/movie/${id}/video`)"
+          >
+            Show trailer
+          </button>
+          <button
+            v-if="movie.homepage"
+            class="relative button__secondary"
+            @click="goTo(movie.homepage)"
+          >
+            Visit webpage
+          </button>
+        </div>
       </div>
-    </section>
-
-    <div v-if="isLoading && !dataLoaded">
-      <Spinner
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-      />
     </div>
-  </main>
+  </section>
+
+  <div v-if="isLoading && !dataLoaded">
+    <Spinner
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">

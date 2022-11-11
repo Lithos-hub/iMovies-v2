@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div data-testid="wrapper" class="relative">
     <input
       data-testid="input"
       :placeholder="placeholder"

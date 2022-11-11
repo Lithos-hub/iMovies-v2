@@ -2,7 +2,7 @@
   <MenuFloat v-if="showFloatMenu" />
   <h1>Movies by genre</h1>
   <section
-    data-testid="data-results"
+    data-testid="wrapper"
     class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg text-right grid md:grid-cols-3 gap-2"
     v-if="dataLoaded"
   >
@@ -35,7 +35,7 @@
     @close="showDialog = false"
   >
     <section
-      data-testid="data-results"
+      data-testid="wrapper"
       class="bg-[#050505] bg-opacity-50 p-5 rounded-lg"
     >
       <div class="mt-5 grid grid-cols-1 md:grid-cols-4 gap-5">

@@ -1,5 +1,6 @@
 <template>
   <div
+    data-testid="wrapper"
     class="flex flex-col justify-center mt-[200px]"
     :class="{ 'mt-[100px]': showRegisterForm }"
   >
@@ -109,6 +110,7 @@
             </div>
           </div>
         </section>
+        <hr class="my-5" />
         <div class="mt-5">
           <input type="submit" value="Sign up" class="button__primary" />
         </div>

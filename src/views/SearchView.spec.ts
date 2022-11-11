@@ -25,6 +25,6 @@ describe("Component: View", () => {
   const wrapper = getWrapper();
 
   it("Renders the component", () => {
-    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-testid="wrapper"]').exists()).toBe(true);
   });
 });

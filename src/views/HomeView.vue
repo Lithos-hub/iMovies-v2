@@ -1,5 +1,5 @@
 <template>
-  <section v-if="dataLoaded">
+  <section data-testid="wrapper" v-if="dataLoaded">
     <MenuFloat v-if="showFloatMenu" />
     <div
       ref="carrousel"

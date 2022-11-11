@@ -1,5 +1,5 @@
 <template>
-  <button class="button__primary" @click="comeback">
+  <button data-testid="wrapper" class="button__primary" @click="comeback">
     <span><i class="fa-solid fa-arrow-left mr-2"></i> Comeback</span>
   </button>
 </template>

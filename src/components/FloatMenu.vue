@@ -1,5 +1,6 @@
 <template>
   <main
+    data-testid="wrapper"
     ref="floatMenu"
     class="fixed z-50"
     :style="`top: ${clientY}px; left: ${clientX}px`"

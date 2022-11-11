@@ -9,12 +9,15 @@ const getWrapper = () =>
     global: {
       plugins: [createTestingPinia()],
     },
+    data: () => {
+      dataLoaded: true;
+    },
   });
 
 describe("Component: View", () => {
   const wrapper = getWrapper();
 
   it("Renders the component", () => {
-    expect(wrapper.exists()).toBeTruthy();
+    expect(wrapper.find('[data-testid="wrapper"]').exists()).toBeTruthy();
   });
 });

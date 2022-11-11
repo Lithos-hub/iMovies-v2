@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-testid="wrapper">
     <div role="status">
       <svg
         aria-hidden="true"

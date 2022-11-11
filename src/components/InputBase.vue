@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-testid="wrapper">
     <label class="text-cyan-400">{{ label }}</label>
     <input
       ref="input"

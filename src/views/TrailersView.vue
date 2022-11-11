@@ -1,7 +1,7 @@
 <template>
   <h1>New movie trailers</h1>
   <section
-    data-testid="data-results"
+    data-testid="wrapper"
     class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
     v-if="!isLoading && dataLoaded"
   >
