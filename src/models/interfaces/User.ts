@@ -1,9 +1,21 @@
 export interface User {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  register_date: string;
   birthday: string;
-  avatar: string;
-  is_verified: boolean;
+  avatar: string | any;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface UserLogin {
+  email: string;
+  password: string;
+}
+
+export interface UserSignup {
+  name: string;
+  email: string;
+  birthday: string;
+  password: string;
 }

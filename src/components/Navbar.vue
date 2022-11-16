@@ -18,7 +18,7 @@
         </li>
         <!-- USER IS LOGGED -->
         <li
-          v-if="user"
+          v-if="tokenId"
           @click="open($event, true)"
           class="navbar__link text-[13px]"
         >
@@ -26,6 +26,14 @@
             class="fa-solid fa-user border border-cyan-500 text-cyan-500 p-2 rounded-full"
           ></i>
         </li>
+        <button
+          v-if="tokenId"
+          class="button__logout text-[13px] max-h-[40px] my-auto"
+          @click="logout"
+        >
+          Logout
+        </button>
+
         <!-- USER IS NOT LOGGED -->
         <button
           v-else
@@ -45,7 +53,7 @@
       </div>
       <Transition name="fade">
         <div v-if="menu" class="navbar mt-2">
-          <ul>
+          <ul class="py-2">
             <li
               class="navbar__link text-[15px]"
               v-for="{ name, path } of navbarMenuLinks"
@@ -53,6 +61,31 @@
             >
               {{ name }}
             </li>
+            <!-- USER IS LOGGED -->
+            <li
+              v-if="tokenId"
+              @click="open($event, true)"
+              class="navbar__link text-[13px]"
+            >
+              <i
+                class="fa-solid fa-user border border-cyan-500 text-cyan-500 p-2 rounded-full"
+              ></i>
+            </li>
+            <button
+              v-if="tokenId"
+              class="button__logout text-[13px] mt-2 w-full"
+              @click="logout"
+            >
+              Logout
+            </button>
+            <!-- USER IS NOT LOGGED -->
+            <button
+              v-else
+              class="button__tertiary text-[13px] mt-2"
+              @click="goTo('/access')"
+            >
+              Sign in
+            </button>
           </ul>
         </div>
       </Transition>
@@ -64,7 +97,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { navbarMenuLinks, accountMenuItems } from "../utils";
 
@@ -77,8 +110,8 @@ import { storeToRefs } from "pinia";
 import { useUserStore } from "../stores/User";
 
 const { goTo } = useNavigationStore();
-
-const { user } = useUserStore();
+const userStore = useUserStore();
+const { tokenId } = storeToRefs(userStore);
 
 const mediaStore = useMediaStore();
 
@@ -88,9 +121,15 @@ const { open } = useFloatMenuStore();
 const { showDefaultFloatMenu } = storeToRefs(floatMenuStore);
 
 const route = useRoute();
+const router = useRouter();
 
 const screen = computed(() => mediaStore.getScreen);
 const menu = ref(false);
+
+const logout = () => {
+  localStorage.clear();
+  router.go(0);
+};
 
 watch(
   () => route.fullPath,

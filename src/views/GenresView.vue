@@ -124,7 +124,6 @@ const getMoviesByGenre = () => {
       ["vote_average.gte"]: 7,
       sort_by: "popularity.desc",
     });
-    console.log(getExcludedGenres(id));
     moviesByGenre.value.push({
       genreId: id,
       genreName: name,

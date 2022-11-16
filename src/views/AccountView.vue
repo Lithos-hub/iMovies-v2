@@ -1,7 +1,12 @@
 <template>
   <h1>Account settings</h1>
+  <Spinner
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    lg
+    v-if="loading"
+  />
   <section
-    v-if="user"
+    v-if="user && !loading"
     data-testid="wrapper"
     class="relative container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg md:text-left"
   >
@@ -20,7 +25,7 @@
       </div>
       <div class="md:col-span-5">
         <p class="text-xl">Member since:</p>
-        <h4>{{ user.register_date }}</h4>
+        <h4>{{ user.createdAt }}</h4>
 
         <p class="text-xl mt-2">Email:</p>
         <h4 class="">{{ user.email }}</h4>
@@ -90,15 +95,27 @@
 </template>
 
 <script setup lang="ts">
+import { ref, reactive, toRefs, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import { ref, reactive, toRefs } from "vue";
 import { useUserStore } from "../stores/User";
 
 import Dialog from "../components/Dialog.vue";
 import InputBase from "../components/InputBase.vue";
+import Spinner from "../components/Spinner.vue";
+import { useSpinnerStore } from "../stores/Spinner";
+
+import UserServices from "../services/User";
+import { useErrorHandle } from "../composables/errorHandle";
+import { AxiosError } from "axios";
+import { useSnackbarStore } from "../components/Snackbar/store";
 
 const userStore = useUserStore();
 const { user, movies } = storeToRefs(userStore);
+
+const { setLoading } = useSpinnerStore();
+const { loading } = storeToRefs(useSpinnerStore());
+const { showSnackbar } = useSnackbarStore();
+
 const form = ref();
 
 const formData = reactive({
@@ -115,6 +132,22 @@ const showEditDialog = ref(false);
 const openDialog = () => console.log("open");
 const submit = (e: Event) => form.value.dispatchEvent(e);
 const onSubmit = () => console.log("Sending info: ", formData);
+const checkUser = async () => {
+  try {
+    setLoading(true);
+    const id = localStorage.getItem("id");
+    const res = await UserServices.getUser(id as string);
+    userStore.setUser(res);
+  } catch (error) {
+    showSnackbar("error", useErrorHandle(error as AxiosError));
+  } finally {
+    setLoading(false);
+  }
+};
+
+onMounted(() => {
+  checkUser();
+});
 </script>
 
 <style scoped></style>

@@ -27,16 +27,25 @@
           />
         </section>
         <div class="mt-5">
-          <input type="submit" value="Sign in" class="button__primary" />
+          <ButtonBase
+            type="submit"
+            text="Sign in"
+            variant="button__primary"
+            :disabled="!email.length && !password.length"
+            loadingIcon
+          />
         </div>
         <section class="mt-7">
           <small class="block text-cyan-300">Don't have an account yet?</small>
-          <input
-            type="button"
-            value="Register"
-            class="button__secondary"
-            @click="showRegisterForm = true"
-          />
+          <div class="relative">
+            <input
+              type="button"
+              value="Register"
+              class="button__secondary w-[140px]"
+              @click="showRegisterForm = true"
+              isNotTextField
+            />
+          </div>
         </section>
       </form>
 
@@ -91,10 +100,10 @@
             class="hidden"
             placeholder="Select your profile image"
             label="Profile image"
-            v-model="avatar"
+            v-model="file"
             type="file"
           />
-          <div :class="{ 'flex justify-between': form.avatar }">
+          <div :class="{ 'flex justify-between': file }">
             <button
               type="button"
               class="button__secondary"
@@ -102,17 +111,21 @@
             >
               Select profile image
             </button>
-            <div v-if="form.avatar" class="text-[18px] my-auto">
+            <div v-if="file" class="text-[18px] my-auto">
               Selected:
-              <span class="text-cyan-500 font-medium">{{
-                form.avatar.split("\\").pop()
-              }}</span>
+              <span class="text-cyan-500 font-medium">{{ file }}</span>
             </div>
           </div>
         </section>
         <hr class="my-5" />
         <div class="mt-5">
-          <input type="submit" value="Sign up" class="button__primary" />
+          <ButtonBase
+            type="submit"
+            text="Sign up"
+            variant="button__primary"
+            :disabled="!email.length && !password.length"
+            loadingIcon
+          />
         </div>
       </form>
     </section>
@@ -120,26 +133,81 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs, reactive } from "vue";
-import InputBase from "../components/InputBase.vue";
+import { ref, reactive, toRefs } from "vue";
+import { AxiosError, AxiosResponse } from "axios";
+
+import Auth from "../services/Auth";
+import Storage from "../services/Storage";
+import User from "../services/User";
+
 import { useNavigationStore } from "../stores/Navigation";
+import { useSpinnerStore } from "../stores/Spinner";
+import { useUserStore } from "../stores/User";
+
+import InputBase from "../components/InputBase.vue";
+import { useErrorHandle } from "../composables/errorHandle";
+import { useSnackbarStore } from "../components/Snackbar/store";
+import ButtonBase from "../components/ButtonBase.vue";
 
 const { goTo } = useNavigationStore();
+const { showSnackbar } = useSnackbarStore();
+const { setLoading } = useSpinnerStore();
 
+const { setUser } = useUserStore();
 const avatarInput = ref();
 
 const form = reactive({
-  name: "",
-  birthday: "",
-  email: "",
-  password: "",
-  avatar: "",
+  name: "asd",
+  birthday: "2000-12-12",
+  email: "asd@asd.com",
+  password: "asdasdasd",
 });
+const { name, birthday, email, password } = toRefs(form);
 
-const { name, birthday, email, password, avatar } = toRefs(form);
+const file: File | any = ref();
 
 const showRegisterForm = ref(false);
-// TODO: signin
-const signin = () => goTo("/home");
-const signup = () => goTo("/home");
+
+const uploadFile = async () => {
+  const userId = localStorage.getItem("id") as string;
+  file.value.name.replace(/^/, `${userId}-`);
+  const token = localStorage.getItem("id-token") as string;
+  return await Storage.upload(token, file.value);
+};
+const signin = async () => {
+  setLoading(true);
+  try {
+    const { token, user } = await Auth.signin({
+      email: email.value,
+      password: password.value,
+    });
+    localStorage.setItem("id-token", token);
+    localStorage.setItem("id", user._id);
+    setUser(user);
+    showSnackbar("success", "You logged in successfully!");
+    goTo("/");
+  } catch (error) {
+    showSnackbar("error", useErrorHandle(error as AxiosError));
+  } finally {
+    setLoading(false);
+  }
+};
+const signup = async () => {
+  setLoading(true);
+  try {
+    await Auth.signup(form);
+    await signin();
+    const file: any = await uploadFile();
+    const id = localStorage.getItem("id") as string;
+    await User.updateUser({
+      ...form,
+      id,
+      avatar: file.fileName,
+    });
+  } catch (error) {
+    showSnackbar("error", useErrorHandle(error as AxiosError));
+  } finally {
+    setLoading(false);
+  }
+};
 </script>

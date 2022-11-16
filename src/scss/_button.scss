@@ -1,10 +1,13 @@
 .button__primary {
-  @apply w-auto bg-blue-800 p-2 px-10 text-white rounded-sm hover:brightness-110 duration-200 active:bg-blue-600;
+  @apply bg-blue-800 p-2 px-10 text-white rounded-sm hover:brightness-110 duration-200 active:bg-blue-600;
 }
 
 .button__secondary {
-  @apply w-auto bg-cyan-800 p-2 px-10 text-white rounded-sm hover:brightness-110 duration-200 active:bg-cyan-600;
+  @apply bg-cyan-800 p-2 px-10 text-white rounded-sm hover:brightness-110 duration-200 active:bg-cyan-600;
 }
 .button__tertiary {
-  @apply w-auto bg-transparent border font-medium border-cyan-500 p-2 px-10 text-cyan-400 rounded-sm duration-200 hover:brightness-150;
+  @apply bg-transparent border font-medium border-cyan-500 p-2 px-10 text-cyan-400 rounded-sm duration-200 hover:brightness-150;
+}
+.button__logout {
+  @apply bg-transparent  border font-medium border-red-500 p-2 px-5 text-red-400 rounded-sm duration-200 hover:brightness-150;
 }

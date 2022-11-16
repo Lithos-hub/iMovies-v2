@@ -43,7 +43,7 @@ export function getDateAgo(days: number) {
   return dateToString; // => return the date in DD/MM/YYYY format
 }
 
-// The Movie DB API needs this date format
+// The Movie DB API and the Mongo DB need this date format
 export function formatDate(date: string) {
   let [day, month, year] = date.split("/");
   return `${year}-${month}-${day}`;

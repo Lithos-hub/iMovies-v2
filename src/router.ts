@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from "./stores/User";
 
 const routes = [
   {
@@ -56,6 +57,13 @@ const routes = [
 const router = createRouter({
   routes,
   history: createWebHistory(),
+});
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  const tokenId = localStorage.getItem("id-token");
+  userStore.setToken(tokenId as string);
+  next();
 });
 
 export default router;

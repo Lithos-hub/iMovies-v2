@@ -3,7 +3,12 @@
     <div role="status">
       <svg
         aria-hidden="true"
-        class="w-[80px] h-[80px] text-cyan-800 fill-cyan-400 spin"
+        class="text-cyan-800 fill-cyan-400 spin"
+        :class="{
+          'w-[80px] h-[80px]': lg,
+          'w-[40px] h-[40px]': md,
+          'w-[15px] h-[15px]': sm,
+        }"
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -21,3 +26,11 @@
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+defineProps<{
+  lg?: boolean;
+  md?: boolean;
+  sm?: boolean;
+}>();
+</script>

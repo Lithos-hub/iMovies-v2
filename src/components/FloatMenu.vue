@@ -1,8 +1,9 @@
 <template>
   <main
+    id="float-menu"
     data-testid="wrapper"
     ref="floatMenu"
-    class="fixed z-50"
+    class="fixed"
     :style="`top: ${clientY}px; left: ${clientX}px`"
   >
     <div class="bg-[#202020] pa-5 w-[200px] rounded-md">
@@ -34,7 +35,7 @@
   </main>
   <div
     id="overlay"
-    class="z-40 fixed top-0 left-0 w-full h-full"
+    class="fixed top-0 left-0 w-full h-full"
     @click="
       showFloatMenu = false;
       showDefaultFloatMenu = false;
@@ -70,3 +71,13 @@ onMounted(() => {
   });
 });
 </script>
+
+<style lang="scss" scoped>
+#float-menu {
+  z-index: 999;
+}
+
+#overlay {
+  z-index: 998;
+}
+</style>
