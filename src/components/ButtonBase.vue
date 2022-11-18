@@ -1,6 +1,10 @@
 <template>
   <div class="relative w-[140px] mx-auto">
-    <button :type="type" :class="`${variant} w-[140px]`" :disabled="disabled">
+    <button
+      :type="type"
+      :class="`${disabled ? 'button__disabled' : variant} w-[140px]`"
+      :disabled="disabled"
+    >
       {{ text }}
     </button>
     <Spinner
@@ -20,7 +24,7 @@ defineProps<{
   variant: string;
   disabled: boolean;
   text: string;
-  loadingIcon: boolean;
+  loadingIcon?: boolean;
 }>();
 
 const spinnerStore = useSpinnerStore();

@@ -15,7 +15,7 @@
       <img
         :src="
           movies[i].backdrop_path
-            ? imageBaseUrl + movies[i].backdrop_path
+            ? TMDB_IMG_BASE_URL + movies[i].backdrop_path
             : errorImagePan
         "
         class="relative brightness-50 object-cover w-full"
@@ -49,7 +49,7 @@
             @click="open($event, false, id)"
           ></div>
           <img
-            :src="poster_path ? imageBaseUrl + poster_path : errorImage"
+            :src="poster_path ? TMDB_IMG_BASE_URL + poster_path : errorImage"
             class="w-full rounded-md"
           />
           <div class="blurring__title--primary rounded-b-md">
@@ -70,7 +70,7 @@
 import { Ref, ref, toRefs, reactive, computed, onMounted } from "vue";
 
 import { movieGenres } from "../utils";
-import { imageBaseUrl } from "../utils";
+import { TMDB_IMG_BASE_URL } from "../utils";
 
 import { useMoviesStore } from "../stores/Movies";
 import { useFloatMenuStore } from "../stores/FloatMenu";

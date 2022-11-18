@@ -1,15 +1,15 @@
 import { User } from "../models/interfaces/User";
-import api from "./Api";
+import Api from "./Api";
 
 export default {
   async getUser(_id: string) {
-    const { data } = await api.get(`users/${_id}`);
+    const { data } = await Api.get(`users/${_id}`);
     return data;
   },
-  async updateUser(value: User) {
-    console.log("Updating: ", value);
+  async updateUser(token: string, value: User) {
     const id = localStorage.getItem("id");
-    const { data } = await api.post(`user/${id}`, value);
+    Api.setAuthorization(token);
+    const { data } = await Api.put(`users/${id}`, value);
     return data;
   },
 };

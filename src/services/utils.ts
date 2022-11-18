@@ -5,6 +5,7 @@ import { MovieAxiosOptions } from "../models/interfaces/Movie";
 export const currentDate = new Date();
 export const TMDB_APIKEY = import.meta.env.VITE_TMDB_APIKEY;
 export const BASE_URL = "https://api.themoviedb.org/3";
+
 export const CURRENT_YEAR = new Date().getFullYear();
 export const CURRENT_DATE = formatDate(getCurrentDay());
 export const ONE_WEEK_AGO = formatDate(getDateAgo(7));

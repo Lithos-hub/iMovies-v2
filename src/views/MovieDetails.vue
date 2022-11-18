@@ -9,7 +9,9 @@
     >
       <img
         :src="
-          movie.backdrop_path ? imageBaseUrl + movie.backdrop_path : errorImage
+          movie.backdrop_path
+            ? TMDB_IMG_BASE_URL + movie.backdrop_path
+            : errorImage
         "
         class="absolute top-0 left-0 mix-blend-multiply rounded-[15px] h-full w-full object-cover"
       />
@@ -123,7 +125,9 @@
         >
           <img
             :src="
-              movie.poster_path ? imageBaseUrl + movie.poster_path : errorImage
+              movie.poster_path
+                ? TMDB_IMG_BASE_URL + movie.poster_path
+                : errorImage
             "
             class="hidden md:block relative rounded-[15px] shadow-lg w-full max-w-[400px] h-auto"
           />
@@ -156,7 +160,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-import { imageBaseUrl } from "../utils";
+import { TMDB_IMG_BASE_URL } from "../utils";
 
 import { storeToRefs } from "pinia";
 import { useMoviesStore } from "../stores/Movies";

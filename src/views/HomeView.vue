@@ -15,7 +15,7 @@
           class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
           @click="open($event, false, id)"
         ></div>
-        <img class="carrousel__img" :src="imageBaseUrl + backdrop_path" />
+        <img class="carrousel__img" :src="TMDB_IMG_BASE_URL + backdrop_path" />
         <div class="blurring__title--primary">
           <small>{{ title }}</small>
         </div>
@@ -38,7 +38,7 @@
             <div class="flex flex-col lg:grid lg:grid-cols-3 gap-5">
               <div>
                 <img
-                  :src="`${imageBaseUrl}${movieOfTheWeek?.poster_path}`"
+                  :src="`${TMDB_IMG_BASE_URL}${movieOfTheWeek?.poster_path}`"
                   class="w-auto h-auto rounded-[10px]"
                 />
               </div>
@@ -99,7 +99,7 @@ import { useNavigationStore } from "../stores/Navigation";
 import Spinner from "../components/Spinner.vue";
 import MenuFloat from "../components/FloatMenu.vue";
 
-import { imageBaseUrl } from "../utils";
+import { TMDB_IMG_BASE_URL } from "../utils";
 import { parseDate } from "../services/utils";
 
 const movieStore = useMoviesStore();

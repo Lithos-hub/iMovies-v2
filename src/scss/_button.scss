@@ -11,3 +11,7 @@
 .button__logout {
   @apply bg-transparent  border font-medium border-red-500 p-2 px-5 text-red-400 rounded-sm duration-200 hover:brightness-150;
 }
+
+.button__disabled {
+  @apply bg-gray-400  border font-medium border-gray-500 p-2 px-5 text-gray-300 rounded-sm;
+}

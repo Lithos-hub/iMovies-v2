@@ -14,7 +14,7 @@
       <div class="flex flex-col text-center md:col-span-3">
         <div class="relative">
           <img
-            :src="user.avatar"
+            :src="`${ATLAS_IMG_BASE_URL}/${user.avatar}`"
             class="mx-auto w-[200px] md:w-[150px] lg:w-[200px] aspect-square rounded-full object-cover border-4 border-[#505050] cursor-pointer hover:grayscale duration-200"
             @click="openDialog"
           />
@@ -102,12 +102,17 @@ import { useUserStore } from "../stores/User";
 import Dialog from "../components/Dialog.vue";
 import InputBase from "../components/InputBase.vue";
 import Spinner from "../components/Spinner.vue";
+import { useSnackbarStore } from "../components/Snackbar/store";
+
 import { useSpinnerStore } from "../stores/Spinner";
 
 import UserServices from "../services/User";
+
 import { useErrorHandle } from "../composables/errorHandle";
+
+import { ATLAS_IMG_BASE_URL } from "../utils";
+
 import { AxiosError } from "axios";
-import { useSnackbarStore } from "../components/Snackbar/store";
 
 const userStore = useUserStore();
 const { user, movies } = storeToRefs(userStore);

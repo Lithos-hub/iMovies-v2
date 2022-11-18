@@ -26,7 +26,7 @@
           @click="open($event, false, id)"
         ></div>
         <img
-          :src="poster_path ? imageBaseUrl + poster_path : errorImage"
+          :src="poster_path ? TMDB_IMG_BASE_URL + poster_path : errorImage"
           class="w-full rounded-md"
         />
         <div class="blurring__title--primary rounded-b-md">
@@ -46,7 +46,7 @@
 import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 
-import { imageBaseUrl } from "../utils";
+import { TMDB_IMG_BASE_URL } from "../utils";
 
 import { useMoviesStore } from "../stores/Movies";
 import { useNavigationStore } from "../stores/Navigation";

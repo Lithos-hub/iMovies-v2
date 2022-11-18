@@ -26,7 +26,7 @@
               @click="open($event, false, id)"
             ></div>
             <img
-              :src="poster_path ? imageBaseUrl + poster_path : errorImage"
+              :src="poster_path ? TMDB_IMG_BASE_URL + poster_path : errorImage"
               class="w-full rounded-md"
             />
             <div class="blurring__title--primary rounded-b-md">
@@ -57,7 +57,9 @@
               class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
             ></div>
             <img
-              :src="profile_path ? imageBaseUrl + profile_path : errorImage"
+              :src="
+                profile_path ? TMDB_IMG_BASE_URL + profile_path : errorImage
+              "
               class="w-full rounded-md"
             />
             <div class="blurring__title--secondary rounded-b-md">
@@ -82,7 +84,7 @@ import { storeToRefs } from "pinia";
 import { useMoviesStore } from "../stores/Movies";
 import { useNavigationStore } from "../stores/Navigation";
 
-import { imageBaseUrl } from "../utils";
+import { TMDB_IMG_BASE_URL } from "../utils";
 
 import Spinner from "../components/Spinner.vue";
 import SearchInput from "../components/SearchInput.vue";

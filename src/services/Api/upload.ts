@@ -77,7 +77,7 @@ class UploadApi {
         formData.append("file", file);
 
         try {
-          const response = await this.client.post("storage", formData);
+          const response = await this.client.post("file", formData);
           resolve({
             code: response.status,
             error: response.status < 200 || response.status >= 300,

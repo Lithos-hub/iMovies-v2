@@ -14,14 +14,6 @@
         @input="
           $emit('update:modelValue', ($event.target as HTMLInputElement).value)
         "
-        @change="
-          type === 'file'
-            ? $emit(
-                'update:modelValue',
-                ($event.target as HTMLInputElement).files[0]
-              )
-            : null
-        "
       />
       <Spinner
         v-if="isNotTextField"

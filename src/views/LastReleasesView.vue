@@ -24,7 +24,7 @@
           </h3>
         </div>
         <img
-          :src="poster_path ? imageBaseUrl + poster_path : errorImage"
+          :src="poster_path ? TMDB_IMG_BASE_URL + poster_path : errorImage"
           class="w-full rounded-md"
         />
         <div class="blurring__title--primary rounded-b-md">
@@ -45,7 +45,7 @@ import { ref, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 
 import { CURRENT_DATE, ONE_MONTH_AGO, parseDate } from "../services/utils";
-import { imageBaseUrl } from "../utils";
+import { TMDB_IMG_BASE_URL } from "../utils";
 
 import { useMoviesStore } from "../stores/Movies";
 import { useFloatMenuStore } from "../stores/FloatMenu";
