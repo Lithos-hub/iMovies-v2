@@ -17,19 +17,26 @@
 import { watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
+import { AxiosError } from "axios";
+
 import Navbar from "./components/Navbar.vue";
 import Snackbar from "./components/Snackbar/Snackbar.vue";
+import { useSnackbarStore } from "./components/Snackbar/store";
 
+import { storeToRefs } from "pinia";
 import { useMediaStore } from "./stores/Media";
 import { useMoviesStore } from "./stores/Movies";
 import { useFloatMenuStore } from "./stores/FloatMenu";
-import { useSnackbarStore } from "./components/Snackbar/store";
-import { storeToRefs } from "pinia";
+import { useUserStore } from "./stores/User";
+
+import Auth from "./services/Auth";
+import { User } from "./models/interfaces/User";
 
 const { getScreenType } = useMediaStore();
 const movieStore = useMoviesStore();
 const floatMenuStore = useFloatMenuStore();
 const snackbarStore = useSnackbarStore();
+const { setUser } = useUserStore();
 
 const { message, type, display } = storeToRefs(snackbarStore);
 
@@ -43,16 +50,15 @@ watch(
   }
 );
 
-watch(
-  () => localStorage.getItem("id-token"),
-  (val) => {
-    console.log(val);
-  }
-);
-
-onMounted(() => {
+onMounted(async () => {
   window.onresize = getScreenType;
-  // TODO: get the user when refresh de app
+
+  try {
+    const user = await Auth.getUserInfo();
+    setUser(user as User);
+  } catch (error) {
+    console.log(error);
+  }
 });
 </script>
 

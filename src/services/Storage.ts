@@ -1,9 +1,12 @@
-import UploadApi from "./Api/Upload";
+import { Api } from "./Api";
+
+const API = new Api();
 
 export default {
   async upload(token: string, file: File) {
-    UploadApi.setAuthorization(token);
-    const { data } = await UploadApi.uploadFile(file);
+    API.setAuthorization(token);
+    API.setFormHeader();
+    const { data } = await API.uploadFile(file);
     return data;
   },
 };

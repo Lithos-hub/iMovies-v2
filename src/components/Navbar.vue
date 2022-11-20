@@ -4,7 +4,7 @@
       <ul class="flex justify-between align-middle px-2">
         <!-- NAVBAR MENU ITEMS -->
         <li
-          class="cursor-pointer hover:-hue-rotate-30 hover:brightness-125 duration-200"
+          class="my-auto cursor-pointer hover:-hue-rotate-30 hover:brightness-125 duration-200"
           @click="goTo('/')"
         >
           <h1>iMovies</h1>

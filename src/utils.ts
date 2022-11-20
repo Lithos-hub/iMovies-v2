@@ -1,9 +1,6 @@
 export const TMDB_IMG_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export const ATLAS_IMG_BASE_URL =
-  "https://imovies-v2-api-production.up.railway.app";
-
-// export const ATLAS_IMG_BASE_URL = "http://localhost:3000";
+export const ATLAS_IMG_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const navbarMenuLinks = [
   {

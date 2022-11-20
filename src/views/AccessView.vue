@@ -16,6 +16,7 @@
       />
     </section>
     <section
+      v-else
       ref="formSection"
       class="relative mx-auto bg-transparent border border-cyan-500 rounded-[10px] shadow-lg p-10 min-w-[250px] w-auto"
     >
@@ -178,8 +179,8 @@ const loadingText = ref("");
 const form = reactive({
   name: "",
   birthday: "",
-  email: "",
-  password: "",
+  email: "prueba@prueba.com",
+  password: "prueba@prueba.com",
 });
 const { name, birthday, email, password } = toRefs(form);
 
@@ -234,7 +235,7 @@ const getLoadingPhrase = () => {
       counter = 0;
     }
     counter++;
-  }, 1500);
+  }, 3000);
 };
 
 const signin = async () => {
@@ -251,6 +252,7 @@ const signin = async () => {
       showSnackbar("success", "You logged in successfully!");
     isCreatingAnAccount.value || goTo("/");
   } catch (error) {
+    console.log("ERROR:", { error });
     showSnackbar("error", useErrorHandle(error as AxiosError));
   } finally {
     isCreatingAnAccount.value || setLoading(false);

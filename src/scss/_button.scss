@@ -13,5 +13,5 @@
 }
 
 .button__disabled {
-  @apply bg-gray-400  border font-medium border-gray-500 p-2 px-5 text-gray-300 rounded-sm;
+  @apply bg-gray-400 border font-medium border-gray-500 p-2 px-5 text-gray-300 rounded-sm cursor-default;
 }

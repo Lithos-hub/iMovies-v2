@@ -1,47 +1,14 @@
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestTransformer,
-} from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 
-// import qs from "qs";
-import {
-  requestErrorInterceptor,
-  requestInterceptor,
-  responseErrorInterceptor,
-  responseInterceptor,
-} from "./interceptors";
-import { requestTransforms, responseTransforms } from "./transforms";
-
-class Api {
+export class Api {
   private static instance: Api;
   public client!: AxiosInstance;
-  public config = {};
 
   constructor() {
     if (!Api.instance) {
       this.client = axios.create({
         baseURL: `${import.meta.env.VITE_API_URL}/api/v1/`,
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        // paramsSerializer: (params) => qs.stringify(params),
       });
-
-      this.client.interceptors.request.use(
-        requestInterceptor,
-        requestErrorInterceptor
-      );
-      this.client.interceptors.response.use(
-        responseInterceptor,
-        responseErrorInterceptor
-      );
-      this.client.defaults.transformRequest = (
-        this.client.defaults.transformRequest as AxiosRequestTransformer[]
-      ).concat(...requestTransforms);
-      this.client.defaults.transformResponse =
-        this.client.defaults.transformResponse.concat(...responseTransforms);
       Api.instance = this;
     }
 
@@ -77,5 +44,47 @@ class Api {
       delete this.client.defaults.headers.common?.Authorization;
     }
   }
+
+  public setFormHeader() {
+    this.client.defaults.headers.post["Content-Type"] = "multipart/form-data";
+    this.client.defaults.headers.post["Accept"] = "multipart/form-data";
+  }
+
+  public setJsonHeader() {
+    this.client.defaults.headers.post["Content-Type"] = "application/json";
+    this.client.defaults.headers.post["Accept"] = "application/json";
+  }
+
+  public uploadFile(file: File) {
+    return new Promise(
+      async (
+        resolve: (value: {
+          code?: number;
+          error: boolean;
+          data: unknown;
+        }) => void,
+        reject
+      ) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          const response = await this.client.post("file", formData);
+          resolve({
+            code: response.status,
+            error: response.status < 200 || response.status >= 300,
+            data: response.data,
+          });
+        } catch (error: unknown) {
+          console.error(error);
+          const { response } = error as AxiosError;
+          resolve({
+            code: response?.status,
+            error: true,
+            data: response?.data,
+          });
+        }
+      }
+    );
+  }
 }
-export default new Api();

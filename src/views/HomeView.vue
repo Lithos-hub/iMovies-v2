@@ -74,7 +74,7 @@
         <div>
           <h2 class="my-5">Movie trivia (soon)</h2>
           <hr class="mb-5" />
-          <button class="button__primary mx-auto">Play</button>
+          <button class="button__disabled mx-auto">Play</button>
         </div>
       </div>
     </main>

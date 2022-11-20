@@ -1,5 +1,27 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  NavigationGuardNext,
+  RouteLocation,
+} from "vue-router";
 import { useUserStore } from "./stores/User";
+
+const requiresAuth = async (
+  _: RouteLocation,
+  __: RouteLocation,
+  next: NavigationGuardNext
+) => {
+  const userStore = useUserStore();
+  const { tokenId } = userStore;
+  const token = localStorage.getItem("id-token");
+  userStore.setToken(token as string);
+  if (!tokenId) {
+    console.log("Access denied");
+    next("/");
+  } else {
+    next();
+  }
+};
 
 const routes = [
   {
@@ -51,6 +73,19 @@ const routes = [
     path: "/account",
     name: "Account settings",
     component: () => import("./views/AccountView.vue"),
+    beforeEnter: requiresAuth,
+  },
+  {
+    path: "/my-movies",
+    name: "My movies",
+    component: () => import("./views/MyMoviesView.vue"),
+    beforeEnter: requiresAuth,
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("./views/AboutView.vue"),
+    beforeEnter: requiresAuth,
   },
 ];
 
@@ -59,9 +94,9 @@ const router = createRouter({
   history: createWebHistory(),
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((_: RouteLocation, __: RouteLocation, next) => {
   const userStore = useUserStore();
-  const tokenId = localStorage.getItem("id-token");
+  const tokenId = localStorage.getItem("id-token") || null;
   userStore.setToken(tokenId as string);
   next();
 });
