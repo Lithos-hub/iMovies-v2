@@ -4,10 +4,15 @@
       <ul class="flex justify-between align-middle px-2">
         <!-- NAVBAR MENU ITEMS -->
         <li
-          class="my-auto cursor-pointer hover:-hue-rotate-30 hover:brightness-125 duration-200"
+          class="my-auto cursor-pointer hover:-hue-rotate-30 hover:brightness-125 duration-200 relative"
           @click="goTo('/')"
         >
           <h1>iMovies</h1>
+          <div
+            class="absolute top-1/2 -right-11 -translate-x-1/2 -translate-y-1/2 mix-blend-multiply text-cyan-800 opacity-100 text-6xl font-bold"
+          >
+            2
+          </div>
         </li>
         <li
           class="navbar__link text-[13px]"
