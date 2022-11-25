@@ -18,7 +18,7 @@
         </li>
         <!-- USER IS LOGGED -->
         <li
-          v-if="tokenId"
+          v-if="TOKEN_ID"
           @click="open($event, true)"
           class="navbar__link text-[13px]"
         >
@@ -26,13 +26,6 @@
             class="fa-solid fa-user border border-cyan-500 text-cyan-500 p-2 rounded-full"
           ></i>
         </li>
-        <button
-          v-if="tokenId"
-          class="button__logout text-[13px] max-h-[40px] my-auto"
-          @click="logout"
-        >
-          Logout
-        </button>
 
         <!-- USER IS NOT LOGGED -->
         <button
@@ -63,7 +56,7 @@
             </li>
             <!-- USER IS LOGGED -->
             <li
-              v-if="tokenId"
+              v-if="TOKEN_ID"
               @click="open($event, true)"
               class="navbar__link text-[13px]"
             >
@@ -71,13 +64,6 @@
                 class="fa-solid fa-user border border-cyan-500 text-cyan-500 p-2 rounded-full"
               ></i>
             </li>
-            <button
-              v-if="tokenId"
-              class="button__logout text-[13px] mt-2 w-full"
-              @click="logout"
-            >
-              Logout
-            </button>
             <!-- USER IS NOT LOGGED -->
             <button
               v-else
@@ -111,7 +97,7 @@ import { useUserStore } from "../stores/User";
 
 const { goTo } = useNavigationStore();
 const userStore = useUserStore();
-const { tokenId } = storeToRefs(userStore);
+const { TOKEN_ID } = storeToRefs(userStore);
 
 const mediaStore = useMediaStore();
 
@@ -125,11 +111,6 @@ const router = useRouter();
 
 const screen = computed(() => mediaStore.getScreen);
 const menu = ref(false);
-
-const logout = () => {
-  localStorage.clear();
-  router.go(0);
-};
 
 watch(
   () => route.fullPath,

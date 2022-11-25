@@ -51,7 +51,7 @@ hr {
 }
 
 .defaultFloatMenuItem {
-  @apply p-2 border border-transparent hover:bg-blue-900 hover:bg-opacity-50 duration-200 cursor-pointer text-left;
+  @apply p-3 mx-2 my-2 hover:bg-cyan-900 hover:bg-opacity-50 duration-200 cursor-pointer text-left;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {

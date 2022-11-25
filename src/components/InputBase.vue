@@ -6,7 +6,7 @@
         :value="modelValue"
         ref="input"
         :placeholder="placeholder"
-        class="p-2 rounded-md min-w-[350px] w-full my-2 bg-transparent border border-cyan-500 text-cyan-300"
+        class="p-2 rounded-md w-full my-2 bg-transparent border border-cyan-500 text-white focus:outline-blue-400"
         :accept="accept"
         :type="type"
         autocomplete="false"
@@ -31,7 +31,7 @@ import Spinner from "./Spinner.vue";
 defineEmits(["update:modelValue", "set-file"]);
 defineProps<{
   label: string;
-  placeholder: string;
+  placeholder?: string;
   type?: string;
   accept?: string;
   modelValue: any;

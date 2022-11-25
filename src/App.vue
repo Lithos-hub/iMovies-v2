@@ -17,8 +17,6 @@
 import { watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-import { AxiosError } from "axios";
-
 import Navbar from "./components/Navbar.vue";
 import Snackbar from "./components/Snackbar/Snackbar.vue";
 import { useSnackbarStore } from "./components/Snackbar/store";
@@ -31,6 +29,7 @@ import { useUserStore } from "./stores/User";
 
 import Auth from "./services/Auth";
 import { User } from "./models/interfaces/User";
+import { AxiosError } from "axios";
 
 const { getScreenType } = useMediaStore();
 const movieStore = useMoviesStore();
@@ -56,8 +55,11 @@ onMounted(async () => {
   try {
     const user = await Auth.getUserInfo();
     setUser(user as User);
-  } catch (error) {
-    console.log(error);
+  } catch (error: AxiosError) {
+    const {
+      response: { data },
+    } = error;
+    console.error(data);
   }
 });
 </script>

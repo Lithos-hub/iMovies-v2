@@ -38,10 +38,6 @@ export const accountMenuItems = [
     name: "About",
     path: "/about",
   },
-  {
-    name: "Logout",
-    path: "/logout",
-  },
 ];
 
 export const movieGenres = [

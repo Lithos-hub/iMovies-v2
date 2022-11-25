@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
-
+import { storeToRefs } from "pinia";
+import { useUserStore } from "../../stores/User";
 export class Api {
   private static instance: Api;
   public client!: AxiosInstance;
@@ -31,7 +32,8 @@ export class Api {
     return this.client.delete;
   }
 
-  public setAuthorization(token?: string) {
+  public setAuthorization() {
+    const token = localStorage.getItem("id-token");
     if (token) {
       this.client.defaults.headers.common.Authorization = `Bearer ${token}`;
     } else {

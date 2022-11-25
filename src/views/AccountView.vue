@@ -14,54 +14,52 @@
       <div class="flex flex-col text-center md:col-span-3">
         <div class="relative">
           <img
-            :src="`${ATLAS_IMG_BASE_URL}/${user.avatar}`"
+            :src="`${user.avatar ? imageRoute : './default-user.jpg'}`"
             class="mx-auto w-[200px] md:w-[150px] lg:w-[200px] aspect-square rounded-full object-cover border-4 border-[#505050] cursor-pointer hover:grayscale duration-200"
-            @click="openDialog"
+            @click="changeAvatar"
           />
         </div>
         <h1 class="text-lg lg:text-4xl my-5 md:mt-5">
           {{ user.name }}
         </h1>
       </div>
-      <div class="md:col-span-5">
-        <p class="text-xl">Member since:</p>
-        <h4>{{ user.createdAt }}</h4>
+      <div class="md:col-span-9 grid grid-cols-4 mt-2">
+        <div>
+          <p class="text-3xl">Member since:</p>
+          <h4 class="text-2xl">{{ user.createdAt }}</h4>
+        </div>
 
-        <p class="text-xl mt-2">Email:</p>
-        <h4 class="">{{ user.email }}</h4>
+        <div>
+          <p class="text-3xl">Email:</p>
+          <h4 class="text-2xl">{{ user.email }}</h4>
+        </div>
 
-        <p class="text-xl mt-2">Birthday:</p>
-        <h4 class="">{{ user.birthday }}</h4>
+        <div>
+          <p class="text-3xl">Date of birth:</p>
+          <h4 class="text-2xl">{{ user.dateOfBirth }}</h4>
+        </div>
 
-        <p class="text-xl mt-2">Password:</p>
-        <h4 class="">**********</h4>
-      </div>
-      <div class="md:col-span-4">
-        <p class="text-xl my-2">Favourite genres:</p>
-        <span
-          v-for="item of movies.favourite"
-          class="bg-[#050505] bg-opacity-70 p-1 mx-1 px-5 rounded-full text-cyan-200"
-          >{{ item }}</span
-        >
-        <p class="text-xl my-2">Total favourite movies:</p>
-        <h4 class="">{{ movies.favourite.length }}</h4>
+        <div>
+          <p class="text-3xl">Age:</p>
+          <h4 class="text-2xl">{{ calculateAge(user.dateOfBirth) }}</h4>
+        </div>
       </div>
     </div>
-    <div class="absolute right-5 bottom-3" @click="showEditDialog = true">
+    <div class="absolute right-5 bottom-3" @click="editInfo">
       <i
         class="fa-solid fa-pen-to-square text-cyan-500 hover:text-white cursor-pointer"
       ></i>
     </div>
   </section>
   <Dialog
-    v-if="showEditDialog"
+    v-if="showEditInfoDialog"
     title="Edit account info"
-    @close="showEditDialog = false"
+    @close="showEditInfoDialog = false"
     @save="submit"
     is-form-dialog
   >
     <form ref="form" @submit.prevent="onSubmit">
-      <div class="min-w-[600px] text-left">
+      <div class="min-w-[600px] text-left grid grid-cols-2 gap-5">
         <InputBase
           placeholder="User name"
           label="Name"
@@ -76,77 +74,158 @@
           v-model="email"
         />
         <InputBase
-          placeholder="Password"
-          label="Password"
+          placeholder="New password"
+          label="New password"
           type="password"
           class="my-5"
           v-model="password"
         />
         <InputBase
-          placeholder="Avatar"
-          label="Avatar"
-          type="file"
-          accept="image/png, image/gif, image/jpeg"
-          v-model="avatar"
+          placeholder="Repeat new password"
+          label="Repeat new password"
+          type="password"
+          class="my-5"
+          v-model="repPassword"
         />
       </div>
     </form>
   </Dialog>
+  <input
+    ref="avatarInput"
+    type="file"
+    class="hidden"
+    accept="image/*"
+    @change="onFileSelected"
+  />
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs, onMounted } from "vue";
-import { storeToRefs } from "pinia";
-import { useUserStore } from "../stores/User";
+import { ref, reactive, toRefs, onMounted, watch, computed } from "vue";
+import { AxiosError } from "axios";
 
 import Dialog from "../components/Dialog.vue";
 import InputBase from "../components/InputBase.vue";
 import Spinner from "../components/Spinner.vue";
 import { useSnackbarStore } from "../components/Snackbar/store";
 
+import { useUserStore } from "../stores/User";
 import { useSpinnerStore } from "../stores/Spinner";
+import { storeToRefs } from "pinia";
 
+import Storage from "../services/Storage";
+import User from "../services/User";
 import UserServices from "../services/User";
 
-import { useErrorHandle } from "../composables/errorHandle";
+import {
+  useErrorHandle,
+  useDataCleaner,
+  calculateAge,
+} from "../services/utils";
 
 import { ATLAS_IMG_BASE_URL } from "../utils";
 
-import { AxiosError } from "axios";
-
+const { setUser, setUserIds } = useUserStore();
 const userStore = useUserStore();
-const { user, movies } = storeToRefs(userStore);
+const { user, USER_ID } = storeToRefs(userStore);
 
 const { setLoading } = useSpinnerStore();
 const { loading } = storeToRefs(useSpinnerStore());
 const { showSnackbar } = useSnackbarStore();
 
 const form = ref();
+const avatarInput = ref();
 
 const formData = reactive({
   name: "",
   email: "",
   password: "",
-  avatar: "",
+  repPassword: "",
 });
 
-const { name, email, password, avatar } = toRefs(formData);
+const { name, email, password, repPassword } = toRefs(formData);
 
-const showEditDialog = ref(false);
+const showEditInfoDialog = ref(false);
 
-const openDialog = () => console.log("open");
+watch(
+  () => repPassword.value,
+  (val) => {
+    if (password.value.length && password.value !== val) {
+      console.log("Passwords dont match");
+    }
+  }
+);
+
+watch(
+  () => showEditInfoDialog.value,
+  (val) => {
+    if (!val) {
+      password.value = "";
+      repPassword.value = "";
+    }
+  }
+);
+
+const imageRoute = computed(
+  () => `${ATLAS_IMG_BASE_URL}/${USER_ID.value}/${user.value?.avatar}`
+);
+
+const changeAvatar = () => {
+  avatarInput.value.click();
+};
 const submit = (e: Event) => form.value.dispatchEvent(e);
-const onSubmit = () => console.log("Sending info: ", formData);
+const onSubmit = () =>
+  updateUser(
+    { name: name.value, email: email.value, password: password.value },
+    null
+  );
+
+const onFileSelected = async ({ target }: any) => {
+  const selectedFile = target.files[0];
+  const file = await uploadFile(selectedFile);
+  await updateUser(null, file);
+};
+
+const editInfo = () => {
+  showEditInfoDialog.value = true;
+  name.value = user.value?.name as string;
+  email.value = user.value?.email as string;
+};
+
+const uploadFile = async (selectedFile: File) => {
+  return await Storage.upload(selectedFile);
+};
+
 const checkUser = async () => {
   try {
     setLoading(true);
-    const id = localStorage.getItem("id");
-    const res = await UserServices.getUser(id as string);
+    const res = await UserServices.getUser();
     userStore.setUser(res);
   } catch (error) {
     showSnackbar("error", useErrorHandle(error as AxiosError));
   } finally {
     setLoading(false);
+  }
+};
+
+const updateUser = async (
+  formData?: Record<string, string> | null,
+  file?: any
+) => {
+  try {
+    const cleanedData = formData ? useDataCleaner(formData) : {};
+    const dataToSend = {
+      ...cleanedData,
+      avatar: file ? file.fileName : null,
+    };
+
+    const { token, user } = await User.updateUser(useDataCleaner(dataToSend));
+    localStorage.setItem("id-token", token);
+    setUser(user);
+    setUserIds();
+    showSnackbar("success", "Info updated successfully");
+    showEditInfoDialog.value = false;
+  } catch (error) {
+    showSnackbar("error", useErrorHandle(error as AxiosError));
   }
 };
 

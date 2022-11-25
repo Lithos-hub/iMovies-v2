@@ -2,7 +2,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  birthday: string;
+  dateOfBirth: string;
   avatar: string | any;
   createdAt?: string;
   updatedAt?: string;
@@ -16,6 +16,6 @@ export interface UserLogin {
 export interface UserSignup {
   name: string;
   email: string;
-  birthday: string;
+  dateOfBirth: string;
   password: string;
 }

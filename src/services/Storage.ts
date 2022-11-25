@@ -3,8 +3,8 @@ import { Api } from "./Api";
 const API = new Api();
 
 export default {
-  async upload(token: string, file: File) {
-    API.setAuthorization(token);
+  async upload(file: File) {
+    API.setAuthorization();
     API.setFormHeader();
     const { data } = await API.uploadFile(file);
     return data;

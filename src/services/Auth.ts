@@ -1,5 +1,7 @@
 import { AxiosResponse } from "axios";
+import { storeToRefs } from "pinia";
 import { User, UserLogin, UserSignup } from "../models/interfaces/User";
+import { useUserStore } from "../stores/User";
 import { Api } from "./Api";
 
 const API = new Api();
@@ -16,13 +18,14 @@ export default {
     return data;
   },
   async getUserInfo(): Promise<AxiosResponse<any, any> | User> {
-    const id = localStorage.getItem("id") || null;
-    const token = localStorage.getItem("id-token") || null;
-    API.setAuthorization(token as string);
+    API.setAuthorization();
     API.setJsonHeader();
-    return await API.post(`auth/session`, { id });
+    const userStore = useUserStore();
+    const { USER_ID } = storeToRefs(userStore);
+    return await API.post(`auth/session`, { _id: USER_ID.value });
   },
   logout() {
-    console.log("Logout");
+    localStorage.clear();
+    location.reload();
   },
 };

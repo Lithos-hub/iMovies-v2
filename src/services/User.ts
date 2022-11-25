@@ -1,19 +1,22 @@
-import { User } from "../models/interfaces/User";
+import { storeToRefs } from "pinia";
+import { useUserStore } from "../stores/User";
 import { Api } from "./Api";
-
 const API = new Api();
 
 export default {
-  async getUser(_id: string) {
+  async getUser() {
     API.setJsonHeader();
-    const { data } = await API.get(`users/${_id}`);
+    const userStore = useUserStore();
+    const { USER_ID } = storeToRefs(userStore);
+    const { data } = await API.get(`users/${USER_ID.value}`);
     return data;
   },
-  async updateUser(token: string, value: User) {
-    const id = localStorage.getItem("id");
-    API.setAuthorization(token);
+  async updateUser(userData: Record<string, string>) {
+    API.setAuthorization();
     API.setJsonHeader();
-    const { data } = await API.put(`users/${id}`, value);
+    const userStore = useUserStore();
+    const { USER_ID } = storeToRefs(userStore);
+    const { data } = await API.put(`users/${USER_ID.value}`, userData);
     return data;
   },
 };

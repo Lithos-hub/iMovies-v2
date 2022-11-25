@@ -7,6 +7,4 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import pinia from "./stores";
 
-axios.defaults.baseURL = "https://imovies-api.herokuapp.com/";
-
 createApp(App).use(pinia).use(router).use(VueAxios, axios).mount("#app");

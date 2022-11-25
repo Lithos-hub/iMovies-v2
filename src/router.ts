@@ -1,3 +1,4 @@
+import { storeToRefs } from "pinia";
 import {
   createRouter,
   createWebHistory,
@@ -12,10 +13,8 @@ const requiresAuth = async (
   next: NavigationGuardNext
 ) => {
   const userStore = useUserStore();
-  const { tokenId } = userStore;
-  const token = localStorage.getItem("id-token");
-  userStore.setToken(token as string);
-  if (!tokenId) {
+  const { TOKEN_ID } = storeToRefs(userStore);
+  if (!TOKEN_ID.value) {
     console.log("Access denied");
     next("/");
   } else {
@@ -96,8 +95,7 @@ const router = createRouter({
 
 router.beforeEach((_: RouteLocation, __: RouteLocation, next) => {
   const userStore = useUserStore();
-  const tokenId = localStorage.getItem("id-token") || null;
-  userStore.setToken(tokenId as string);
+  userStore.setUserIds();
   next();
 });
 

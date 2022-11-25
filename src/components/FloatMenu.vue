@@ -26,9 +26,16 @@
         <li
           class="defaultFloatMenuItem"
           v-for="{ name, path } of items"
-          @click="goTo(path)"
+          @click="goTo(path as string)"
         >
           {{ name }}
+        </li>
+        <li
+          class="defaultFloatMenuItem border-red-500 text-red-500 text-lgs"
+          @click="Auth.logout()"
+        >
+          <i class="fa-solid fa-power-off mr-3 text-sm`"></i>
+          Logout
         </li>
       </ul>
     </div>
@@ -51,6 +58,7 @@ import { useFloatMenuStore } from "../stores/FloatMenu";
 import { useNavigationStore } from "../stores/Navigation";
 
 import { Link } from "../models/types/Link";
+import Auth from "../services/Auth";
 
 defineProps<{
   items?: Link[];

@@ -2,7 +2,7 @@
   <div
     data-testid="wrapper"
     class="flex flex-col justify-center mt-[200px]"
-    :class="{ 'mt-[100px]': !isLogin }"
+    :class="{ 'mt-[40px]': !isLogin }"
   >
     <section v-if="loading">
       <h3
@@ -86,9 +86,8 @@
           <div class="relative">
             <InputBase
               ref="dateInput"
-              placeholder="Write your birthday"
-              label="Birthday"
-              v-model="birthday"
+              label="Date of birth"
+              v-model="dateOfBirth"
               type="date"
               required
             />
@@ -115,18 +114,19 @@
             type="file"
           />
           <label class="text-cyan-400">Avatar</label>
-          <div :class="{ 'flex justify-between': file }">
-            <button
-              type="button"
-              class="button__secondary"
-              @click="avatarInput.click()"
-            >
-              Select profile image
-            </button>
-            <div v-if="file" class="text-[18px] my-auto">
-              Selected:
-              <span class="text-cyan-500 font-medium">{{ file.name }}</span>
-            </div>
+
+          <button
+            type="button"
+            class="button__secondary"
+            @click="avatarInput.click()"
+          >
+            Select profile image
+          </button>
+          <div v-if="file" class="text-[18px] my-auto">
+            Selected:
+            <span class="text-cyan-500 font-medium block">{{
+              sliceFileName(file.name)
+            }}</span>
           </div>
         </section>
         <hr class="my-5" />
@@ -150,6 +150,7 @@ import { AxiosError } from "axios";
 import Auth from "../services/Auth";
 import Storage from "../services/Storage";
 import User from "../services/User";
+import { useErrorHandle } from "../services/utils";
 
 import { useNavigationStore } from "../stores/Navigation";
 import { useSpinnerStore } from "../stores/Spinner";
@@ -158,7 +159,6 @@ import { useUserStore } from "../stores/User";
 import InputBase from "../components/InputBase.vue";
 import Spinner from "../components/Spinner.vue";
 
-import { useErrorHandle } from "../composables/errorHandle";
 import { useSnackbarStore } from "../components/Snackbar/store";
 import ButtonBase from "../components/ButtonBase.vue";
 
@@ -170,7 +170,7 @@ const spinnerStore = useSpinnerStore();
 const { loading } = storeToRefs(spinnerStore);
 const { setLoading } = useSpinnerStore();
 
-const { setUser } = useUserStore();
+const { setUser, setUserIds } = useUserStore();
 
 const avatarInput = ref();
 const formSection = ref();
@@ -178,11 +178,11 @@ const loadingText = ref("");
 
 const form = reactive({
   name: "",
-  birthday: "",
-  email: "prueba@prueba.com",
-  password: "prueba@prueba.com",
+  dateOfBirth: "",
+  email: "",
+  password: "",
 });
-const { name, birthday, email, password } = toRefs(form);
+const { name, dateOfBirth, email, password } = toRefs(form);
 
 const file: File | any = ref();
 
@@ -200,7 +200,7 @@ const isValid = computed(() => {
       !!email.value.length &&
       !!password.value.length &&
       !!name.value.length &&
-      !!birthday.value.length;
+      !!dateOfBirth.value.length;
   }
   return isValid;
 });
@@ -209,7 +209,7 @@ watch(
   () => isLogin.value,
   () => {
     name.value = "";
-    birthday.value = "";
+    dateOfBirth.value = "";
     email.value = "";
     password.value = "";
     file.value = null;
@@ -247,9 +247,10 @@ const signin = async () => {
     });
     localStorage.setItem("id-token", token);
     localStorage.setItem("id", user._id);
+    setUserIds();
     setUser(user);
     isCreatingAnAccount.value ||
-      showSnackbar("success", "You logged in successfully!");
+      showSnackbar("success", "You logged in successfully");
     isCreatingAnAccount.value || goTo("/");
   } catch (error) {
     console.log("ERROR:", { error });
@@ -272,7 +273,7 @@ const signup = async () => {
     const file = await uploadFile();
     // Update the user with the created avatar file
     await updateUser(file);
-    showSnackbar("success", "You created an account successfully!");
+    showSnackbar("success", "You created an account successfully");
     goTo("/");
   } catch (error) {
     showSnackbar("error", useErrorHandle(error as AxiosError));
@@ -282,23 +283,22 @@ const signup = async () => {
   }
 };
 const uploadFile = async () => {
-  const userId = localStorage.getItem("id") as string;
-  file.value.name.replace(/^/, `${userId}-`);
-  const token = localStorage.getItem("id-token") as string;
-  return await Storage.upload(token, file.value);
+  return await Storage.upload(file.value);
 };
 const updateUser = async (file: any) => {
   try {
-    const id = localStorage.getItem("id") as string;
-    const token = localStorage.getItem("id-token") as string;
-    const user = await User.updateUser(token, {
-      ...form,
-      id,
+    const user = await User.updateUser({
       avatar: file.fileName,
     });
     setUser(user);
   } catch (error) {
     showSnackbar("error", useErrorHandle(error as AxiosError));
   }
+};
+const sliceFileName = (fileName: string): string => {
+  const name = fileName.split(".").shift() as string;
+  const ext = fileName.split(".").pop();
+  const string = name.length > 20 ? name.slice(0, 20) + "[...]" : name;
+  return `${string}.${ext}` as string;
 };
 </script>

@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { validationError } from "../models/interfaces/Error";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
 
 // Variables
 export const currentDate = new Date();
 export const TMDB_APIKEY = import.meta.env.VITE_TMDB_APIKEY;
 export const BASE_URL = "https://api.themoviedb.org/3";
-
 export const CURRENT_YEAR = new Date().getFullYear();
 export const CURRENT_DATE = formatDate(getCurrentDay());
 export const ONE_WEEK_AGO = formatDate(getDateAgo(7));
@@ -130,4 +130,40 @@ export const getMovieQueryById = (id: string | number): string => {
 };
 export const getGenresQuery = (): string => {
   return `${BASE_URL}/genre/movie/list?api_key=${TMDB_APIKEY}`;
+};
+
+export const useDataCleaner = (data: Record<string, any>) => {
+  return Object.assign(
+    {},
+    ...Object.keys(data)
+      .map((key) => {
+        if (data[key]) {
+          return { [key]: data[key] };
+        }
+      })
+      .filter((item) => item)
+  );
+};
+
+export const useErrorHandle = (err: AxiosError | Record<string, any>) => {
+  const {
+    response: {
+      data: { errors, error },
+    },
+  } = err;
+  if (errors && errors.length) {
+    return errors
+      .map(({ msg, param }: validationError) => `${msg} on ${param} field. `)
+      .join("");
+  } else {
+    return error;
+  }
+};
+
+export const calculateAge = (dateOfBirth: string) => {
+  const yearInMilliseconds = 31536000000;
+  const dateOfBirthToMillis = new Date(dateOfBirth).getTime();
+  const currentDateToMillis = new Date().getTime();
+  const diff = currentDateToMillis - dateOfBirthToMillis;
+  return Math.floor(diff / yearInMilliseconds);
 };
