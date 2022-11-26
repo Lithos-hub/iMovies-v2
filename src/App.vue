@@ -55,11 +55,8 @@ onMounted(async () => {
   try {
     const user = await Auth.getUserInfo();
     setUser(user as User);
-  } catch (error: AxiosError) {
-    const {
-      response: { data },
-    } = error;
-    console.error(data);
+  } catch (error) {
+    console.error(error);
   }
 });
 </script>
