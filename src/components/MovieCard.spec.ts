@@ -1,17 +1,17 @@
 import { mount } from "@vue/test-utils";
-import InputBase from "./InputBase.vue";
+import MovieCard from "./MovieCard.vue";
 import { describe, it, expect } from "vitest";
 
 import { createTestingPinia } from "@pinia/testing";
 
 const getWrapper = () =>
-  mount(InputBase, {
+  mount(MovieCard, {
     global: {
       plugins: [createTestingPinia()],
     },
   });
 
-describe("Component: InputBase", () => {
+describe("Component: MovieCard", () => {
   const wrapper = getWrapper();
 
   it("Renders the component", () => {

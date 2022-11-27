@@ -11,7 +11,7 @@ const getWrapper = () =>
     },
   });
 
-describe("Component: View", () => {
+describe("Component: FloatMenu", () => {
   const wrapper = getWrapper();
 
   it("Renders the component", () => {

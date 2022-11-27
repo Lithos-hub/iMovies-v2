@@ -16,23 +16,7 @@
     v-if="dataLoaded"
   >
     <div class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-5">
-      <div
-        v-for="{ id, title, poster_path } of movies"
-        :key="id"
-        class="relative w-full"
-      >
-        <div
-          class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-          @click="open($event, false, id)"
-        ></div>
-        <img
-          :src="poster_path ? TMDB_IMG_BASE_URL + poster_path : errorImage"
-          class="w-full rounded-md"
-        />
-        <div class="blurring__title--primary rounded-b-md">
-          <small>{{ title }}</small>
-        </div>
-      </div>
+      <MovieCard v-for="(movie, i) of movies" :key="i" :data="movie" />
     </div>
   </section>
   <div v-if="isLoading && !dataLoaded">
@@ -46,23 +30,20 @@
 import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 
-import { TMDB_IMG_BASE_URL } from "../utils";
-
 import { useMoviesStore } from "../stores/Movies";
-import { useNavigationStore } from "../stores/Navigation";
 
 import MenuFloat from "../components/FloatMenu.vue";
 import SearchInput from "../components/SearchInput.vue";
 import Spinner from "../components/Spinner.vue";
 
 import { useFloatMenuStore } from "../stores/FloatMenu";
+import MovieCard from "../components/MovieCard.vue";
 
 const movieStore = useMoviesStore();
-const { goTo } = useNavigationStore();
 
 const floatMenuStore = useFloatMenuStore();
-const { open } = useFloatMenuStore();
-const { movies, errorImage } = storeToRefs(movieStore);
+
+const { movies } = storeToRefs(movieStore);
 const { showFloatMenu } = storeToRefs(floatMenuStore);
 
 const isLoading = ref(false);

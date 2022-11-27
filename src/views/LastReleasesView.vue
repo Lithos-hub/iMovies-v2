@@ -7,30 +7,12 @@
     v-if="dataLoaded"
   >
     <div class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-5">
-      <div
-        v-for="{ id, title, poster_path, release_date } of movies"
-        :key="id"
-        class="relative w-full"
-      >
-        <div
-          class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-          @click="open($event, false, id)"
-        ></div>
-        <div
-          class="bg-[#202020] p-2 absolute top-0 left-0 w-full text-center rounded-t-md"
-        >
-          <h3>
-            {{ parseDate(release_date) }}
-          </h3>
-        </div>
-        <img
-          :src="poster_path ? TMDB_IMG_BASE_URL + poster_path : errorImage"
-          class="w-full rounded-md"
-        />
-        <div class="blurring__title--primary rounded-b-md">
-          <small>{{ title }}</small>
-        </div>
-      </div>
+      <MovieCard
+        v-for="(movie, i) of movies"
+        :key="i"
+        :data="movie"
+        show-date-info
+      />
     </div>
   </section>
   <div v-if="isLoading && !dataLoaded">
@@ -44,8 +26,7 @@
 import { ref, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 
-import { CURRENT_DATE, ONE_MONTH_AGO, parseDate } from "../services/utils";
-import { TMDB_IMG_BASE_URL } from "../utils";
+import { CURRENT_DATE, ONE_MONTH_AGO } from "../services/utils";
 
 import { useMoviesStore } from "../stores/Movies";
 import { useFloatMenuStore } from "../stores/FloatMenu";
@@ -53,13 +34,14 @@ import { useFloatMenuStore } from "../stores/FloatMenu";
 import MenuFloat from "../components/FloatMenu.vue";
 
 import Spinner from "../components/Spinner.vue";
+import MovieCard from "../components/MovieCard.vue";
 
 const movieStore = useMoviesStore();
 const floatMenuStore = useFloatMenuStore();
-const { open } = useFloatMenuStore();
+
 const { showFloatMenu } = storeToRefs(floatMenuStore);
 
-const { movies, errorImage } = storeToRefs(movieStore);
+const { movies } = storeToRefs(movieStore);
 
 const isLoading = ref(true);
 const dataLoaded = computed(() => movies.value.length > 0);

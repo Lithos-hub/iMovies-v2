@@ -11,10 +11,17 @@
     <div class="fixed object-none bg-2" />
     <div class="fixed object-none bg-3" />
   </div>
+  <Transition name="fade">
+    <i
+      v-if="reachBottom"
+      @click="goUp"
+      class="fa-solid fa-chevron-up fixed bottom-10 right-10 bg-[#202020] text-cyan-500 p-3 rounded-full hover:bg-cyan-500 hover:text-[#202020] duration-200"
+    ></i>
+  </Transition>
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted } from "vue";
+import { watch, onMounted, computed, ref, Transition } from "vue";
 import { useRoute } from "vue-router";
 
 import Navbar from "./components/Navbar.vue";
@@ -29,7 +36,6 @@ import { useUserStore } from "./stores/User";
 
 import Auth from "./services/Auth";
 import { User } from "./models/interfaces/User";
-import { AxiosError } from "axios";
 
 const { getScreenType } = useMediaStore();
 const movieStore = useMoviesStore();
@@ -40,6 +46,14 @@ const { setUser } = useUserStore();
 const { message, type, display } = storeToRefs(snackbarStore);
 
 const route = useRoute();
+
+const reachBottom = ref(false);
+window.onscroll = () => {
+  reachBottom.value =
+    window.innerHeight + window.scrollY >= document.body.offsetHeight / 2;
+};
+
+const goUp = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 watch(
   () => route.path,

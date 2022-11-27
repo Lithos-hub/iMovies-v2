@@ -51,9 +51,8 @@ export function formatDate(date: string) {
 }
 
 // The user will see this date format
-export function parseDate(date: string) {
-  const months = {};
-  let [year, month, day] = date.split("-");
+export function parseDate(date: string | Date) {
+  let [year, month, day] = String(date).split("-");
   return `${day} ${getMonthName(month)} ${year}`;
 }
 
