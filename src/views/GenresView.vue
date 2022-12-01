@@ -18,7 +18,7 @@
             ? TMDB_IMG_BASE_URL + movies[i].backdrop_path
             : errorImagePan
         "
-        class="relative brightness-50 object-cover w-full"
+        class="relative brightness-75 object-cover w-full"
       />
       <div
         id="genre__name"
@@ -28,34 +28,17 @@
       </div>
     </article>
   </section>
-  <Dialog
-    v-if="showDialog"
-    :title="selected_genre"
-    class="w-[1000px]"
-    @close="showDialog = false"
-  >
+  <Dialog v-if="showDialog" :title="selected_genre" @close="showDialog = false">
     <section
       data-testid="wrapper"
-      class="bg-[#050505] bg-opacity-50 p-5 rounded-lg"
+      class="bg-[#505050] bg-opacity-50 p-5 rounded-lg"
     >
       <div class="mt-5 grid grid-cols-1 md:grid-cols-4 gap-5">
-        <div
-          v-for="{ id, title, poster_path } of selected_movies"
-          :key="id"
-          class="relative w-full"
-        >
-          <div
-            class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
-            @click="open($event, false, id)"
-          ></div>
-          <img
-            :src="poster_path ? TMDB_IMG_BASE_URL + poster_path : errorImage"
-            class="w-full rounded-md"
-          />
-          <div class="blurring__title--primary rounded-b-md">
-            <small>{{ title }}</small>
-          </div>
-        </div>
+        <MovieCard
+          v-for="(movie, i) of selectedData.selected_movies"
+          :key="i"
+          :data="movie"
+        />
       </div>
     </section>
   </Dialog>
@@ -81,6 +64,7 @@ import { MovieListModel } from "../models/interfaces/Movie";
 import MenuFloat from "../components/FloatMenu.vue";
 import Spinner from "../components/Spinner.vue";
 import Dialog from "../components/Dialog.vue";
+import MovieCard from "../components/MovieCard.vue";
 
 const movieStore = useMoviesStore();
 const floatMenuStore = useFloatMenuStore();

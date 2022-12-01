@@ -5,11 +5,11 @@
   ></div>
   <main
     data-testid="wrapper"
-    class="z-10 bg-[#202020] w-full h-screen md:m-10 md:rounded-[15px] lg:w-auto md:w-[800px] md:h-auto md:max-h-[800px] overflow-auto fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    class="z-10 bg-[#202020] w-full h-screen md:m-10 md:rounded-[15px] lg:w-[75vw] md:w-[800px] md:h-auto md:max-h-[800px] overflow-auto fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
   >
     <div class="relative">
       <header
-        class="text-left sticky top-0 left-0 w-full bg-[#101010] z-20 p-5"
+        class="dialog__header text-left sticky top-0 left-0 w-full bg-[#101010] z-50 p-5"
       >
         <div class="text-2xl text-cyan-500">{{ title }}</div>
       </header>
@@ -49,5 +49,3 @@ const submitBtn = ref();
 const submit = () =>
   emit("save", new SubmitEvent("submit", { submitter: submitBtn.value }));
 </script>
-
-<style scoped></style>

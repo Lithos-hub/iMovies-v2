@@ -82,6 +82,7 @@ export const getQueryByOptions = (options: MovieAxiosOptions): string => {
     "primary_release_date.gte": "&primary_release_date.gte=",
     "primary_release_date.lte": "&primary_release_date.lte=",
     "vote_average.gte": "&vote_average.gte=",
+    "vote_count.gte": "&vote_count.gte=",
   };
   for (let option in options) {
     let query = queryOptions[option as keyof typeof queryOptions];

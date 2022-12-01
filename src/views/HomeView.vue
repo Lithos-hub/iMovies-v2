@@ -15,7 +15,12 @@
           class="absolute h-full w-full hover:bg-cyan-900 hover:bg-opacity-50 mix-blend-color-dodge cursor-pointer duration-100"
           @click="open($event, false, id)"
         ></div>
-        <img class="carrousel__img" :src="TMDB_IMG_BASE_URL + backdrop_path" />
+        <img
+          class="carrousel__img"
+          :src="
+            backdrop_path ? TMDB_IMG_BASE_URL + backdrop_path : errorImagePan
+          "
+        />
         <div class="blurring__title--primary">
           <small>{{ title }}</small>
         </div>
@@ -87,8 +92,8 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, computed, watch, nextTick } from "vue";
 import { storeToRefs } from "pinia";
-import { onMounted, ref, computed } from "vue";
 
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
 import { useFloatMenuStore } from "../stores/FloatMenu";
@@ -108,7 +113,8 @@ const floatMenuStore = useFloatMenuStore();
 const { open } = useFloatMenuStore();
 const { showFloatMenu } = storeToRefs(floatMenuStore);
 
-const { movieOfTheWeek, trailerOfTheWeek } = storeToRefs(movieStore);
+const { movieOfTheWeek, trailerOfTheWeek, errorImagePan } =
+  storeToRefs(movieStore);
 const carrousel = ref();
 const dataLoaded = computed(
   () =>
@@ -143,6 +149,11 @@ const onScroll = (event: WheelEvent) => {
   carrousel.value.scrollLeft += event.deltaY * 0.8;
 };
 
+watch(
+  () => dataLoaded.value,
+  () => nextTick(() => animateScroll())
+);
+
 onMounted(async () => {
   await movieStore.getMovies({
     page: 1,
@@ -150,8 +161,7 @@ onMounted(async () => {
     year: new Date().getFullYear(),
   } as MovieAxiosOptions);
 
-  await movieStore.getMovieOfTheWeek();
-  if (dataLoaded.value) setTimeout(() => animateScroll(), 250);
+  movieStore.getMovieOfTheWeek();
 });
 </script>
 

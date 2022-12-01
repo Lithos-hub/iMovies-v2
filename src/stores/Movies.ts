@@ -5,22 +5,28 @@ import {
   MovieVideoMinModel,
   MovieVideoModel,
 } from "../models/interfaces/Movie";
-import MoviesServices from "../services/Movies";
 import { MovieAxiosOptions } from "../models/interfaces/Movie";
+import { ArtistModel } from "../models/interfaces/Artist";
+
+import MoviesServices from "../services/Movies";
+import MyMoviesServices from "../services/MyMovies";
+import { ONE_WEEK_AGO, CURRENT_DATE, useErrorHandle } from "../services/utils";
 
 import noImage from "../assets/img/no-image.jpg";
 import noImagePan from "../assets/img/no-image-pan.jpg";
-
-import { ONE_WEEK_AGO, CURRENT_DATE } from "../services/utils";
-import { ArtistModel } from "../models/interfaces/Artist";
+import { useSnackbarStore } from "../components/Snackbar/store";
+import { AxiosError } from "axios";
 
 export const useMoviesStore = defineStore("useMovies", {
   state: () => ({
+    callCounter: 0,
     errorImage: noImage,
     errorImagePan: noImagePan,
     movies: [] as MovieListModel[],
     movie: {} as MovieDetailsModel,
     genres: [],
+    favourite: [] as number[],
+    wishlist: [] as number[],
     trailers: [] as MovieVideoMinModel[],
     movieTrailer: {} as MovieVideoModel,
     artistResults: [] as ArtistModel[],
@@ -29,9 +35,18 @@ export const useMoviesStore = defineStore("useMovies", {
   }),
   actions: {
     async getMovies(options: MovieAxiosOptions) {
-      await MoviesServices.getMovies(options).then((res) => {
-        this.movies = res as MovieListModel[];
+      await MoviesServices.getMovies(options).then((res: any) => {
+        this.movies = res.sort((a: MovieListModel, b: MovieListModel) => {
+          const date_a = a.release_date;
+          const date_b = b.release_date;
+          if (date_a && date_b) {
+            return date_a.split("-").at(-1) < date_b.split("-").at(-1) ? 1 : -1;
+          }
+        });
       });
+    },
+    clearMovies() {
+      this.movies = [];
     },
     async getMovieDetails(id: string) {
       await MoviesServices.getMovieById(id).then((res) => {
@@ -41,16 +56,22 @@ export const useMoviesStore = defineStore("useMovies", {
     async onSearch(searchOptions: MovieAxiosOptions) {
       this.movies = [];
       this.artistResults = [];
-      await MoviesServices.getMovieBySearch(searchOptions, true).then(
-        async (res) => {
-          this.movies = res as MovieListModel[];
-          await MoviesServices.getMovieBySearch(searchOptions, false).then(
-            (res) => {
-              this.artistResults = res as ArtistModel[];
-            }
-          );
-        }
-      );
+      try {
+        const moviesResults = await MoviesServices.getMovieBySearch(
+          searchOptions,
+          true
+        );
+        this.movies = moviesResults as MovieListModel[];
+
+        const artistsResults = await MoviesServices.getMovieBySearch(
+          searchOptions,
+          false
+        );
+        this.artistResults = artistsResults as ArtistModel[];
+      } catch (error) {
+        const { showSnackbar } = useSnackbarStore();
+        showSnackbar("error", useErrorHandle(error as AxiosError));
+      }
     },
     async getMovieOfTheWeek() {
       const options = {
@@ -61,33 +82,85 @@ export const useMoviesStore = defineStore("useMovies", {
         sort_by: "popularity.desc",
         include_video: true,
       };
-      await MoviesServices.getMovies(options).then(async (res: any) => {
-        this.movieOfTheWeek = res[0] as MovieListModel;
-        await MoviesServices.getMovieTrailer(this.movieOfTheWeek.id).then(
-          (res: any) => {
-            this.trailerOfTheWeek = res[0] as MovieVideoModel;
-          }
-        );
-      });
+
+      try {
+        const moviesResults = (await MoviesServices.getMovies(options)) as any; // TODO: TYPE
+        this.movieOfTheWeek = moviesResults[0] as MovieListModel;
+        const trailersResults = (await MoviesServices.getMovieTrailer(
+          this.movieOfTheWeek.id
+        )) as any; // TODO: TYPE
+        this.trailerOfTheWeek = trailersResults[0] as MovieVideoModel;
+      } catch (error) {
+        const { showSnackbar } = useSnackbarStore();
+        showSnackbar("error", useErrorHandle(error as AxiosError));
+      }
     },
     async getMovieTrailers(id: number, title: string) {
-      await MoviesServices.getMovieTrailer(id).then((res: any) => {
+      try {
+        const trailersResults = (await MoviesServices.getMovieTrailer(
+          id
+        )) as any; // TODO: TYPE
         this.trailers.push({
           id,
           title,
-          trailer_key: res[0].key,
+          trailer_key: trailersResults[0].key,
         });
-      });
+      } catch (error) {
+        const { showSnackbar } = useSnackbarStore();
+        showSnackbar("error", useErrorHandle(error as AxiosError));
+      }
     },
     async getMovieTrailer(id: number | string) {
-      await MoviesServices.getMovieTrailer(id).then((res: any) => {
-        this.movieTrailer = res[0];
-      });
+      try {
+        const trailersResults = (await MoviesServices.getMovieTrailer(
+          id
+        )) as any; // TODO: TYPE
+        this.movieTrailer = trailersResults[0];
+      } catch (error) {
+        const { showSnackbar } = useSnackbarStore();
+        showSnackbar("error", useErrorHandle(error as AxiosError));
+      }
     },
-    async getGenres() {
-      await MoviesServices.getGenres().then((res: any) => {
-        this.genres = res;
-      });
+    getGenres() {
+      MoviesServices.getGenres().then((res: any) => (this.genres = res));
+    },
+    async getMyMovies() {
+      try {
+        const moviesResults = await MyMoviesServices.getMoviesByUserId();
+
+        this.favourite = moviesResults
+          .filter(
+            ({ category }: { category: string }) => category === "favourite"
+          )
+          .map(({ id }: { id: number }) => id);
+
+        this.wishlist = moviesResults
+          .filter(
+            ({ category }: { category: string }) => category === "wishlist"
+          )
+          .map(({ id }: { id: number }) => id);
+
+        this.callCounter++;
+      } catch (error) {
+        const { showSnackbar } = useSnackbarStore();
+        showSnackbar("error", useErrorHandle(error as AxiosError));
+      }
+    },
+    async postMovie(id: number, category: "favourite" | "wishlist") {
+      if (category === "favourite") {
+        if (this.favourite.includes(id)) {
+          await MyMoviesServices.removeMovie(id, category);
+        } else {
+          await MyMoviesServices.postMovie(id, category);
+        }
+      } else {
+        if (this.wishlist.includes(id)) {
+          await MyMoviesServices.removeMovie(id, category);
+        } else {
+          await MyMoviesServices.postMovie(id, category);
+        }
+      }
+      await this.getMyMovies();
     },
   },
 });

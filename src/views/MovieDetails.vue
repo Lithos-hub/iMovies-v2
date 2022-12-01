@@ -31,7 +31,7 @@
             Release date:
             <span
               class="bg-[#050505] bg-opacity-70 p-1 mx-2 px-5 rounded-full text-cyan-200"
-              >{{ movie.release_date }}</span
+              >{{ parseDate(movie.release_date as string) }}</span
             >
           </div>
           <div class="relative mt-5">
@@ -123,14 +123,17 @@
         <div
           class="justify-self-end col-span-6 lg:col-span-3 mt-5 md:mt-0 text-center flex flex-col gap-5"
         >
-          <img
-            :src="
-              movie.poster_path
-                ? TMDB_IMG_BASE_URL + movie.poster_path
-                : errorImage
-            "
-            class="hidden md:block relative rounded-[15px] shadow-lg w-full max-w-[400px] h-auto"
-          />
+          <div>
+            <img
+              :src="
+                movie.poster_path
+                  ? TMDB_IMG_BASE_URL + movie.poster_path
+                  : errorImage
+              "
+              class="hidden md:block relative rounded-t-[15px] shadow-lg w-full max-w-[400px] h-auto"
+            />
+            <MovieCardActions :id="id" />
+          </div>
           <button
             class="relative button__primary"
             @click="goTo(`/movie/${id}/video`)"
@@ -167,11 +170,13 @@ import { useMoviesStore } from "../stores/Movies";
 
 import Spinner from "../components/Spinner.vue";
 import { useNavigationStore } from "../stores/Navigation";
+import MovieCardActions from "../components/MovieCardActions.vue";
+import { parseDate } from "../services/utils";
 
 const route = useRoute();
 const movieStore = useMoviesStore();
 const { goTo } = useNavigationStore();
-const id = route.params.id;
+const id = route.params.id as string;
 
 const { movie, errorImage } = storeToRefs(movieStore);
 

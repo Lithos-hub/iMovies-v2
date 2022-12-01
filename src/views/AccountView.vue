@@ -114,7 +114,6 @@ import { storeToRefs } from "pinia";
 
 import Storage from "../services/Storage";
 import User from "../services/User";
-import UserServices from "../services/User";
 
 import {
   useErrorHandle,
@@ -128,7 +127,6 @@ const { setUser, setUserIds } = useUserStore();
 const userStore = useUserStore();
 const { user, USER_ID } = storeToRefs(userStore);
 
-const { setLoading } = useSpinnerStore();
 const { loading } = storeToRefs(useSpinnerStore());
 const { showSnackbar } = useSnackbarStore();
 
@@ -195,18 +193,6 @@ const uploadFile = async (selectedFile: File) => {
   return await Storage.upload(selectedFile);
 };
 
-const checkUser = async () => {
-  try {
-    setLoading(true);
-    const res = await UserServices.getUser();
-    userStore.setUser(res);
-  } catch (error) {
-    showSnackbar("error", useErrorHandle(error as AxiosError));
-  } finally {
-    setLoading(false);
-  }
-};
-
 const updateUser = async (
   formData?: Record<string, string> | null,
   file?: any
@@ -228,10 +214,6 @@ const updateUser = async (
     showSnackbar("error", useErrorHandle(error as AxiosError));
   }
 };
-
-onMounted(() => {
-  checkUser();
-});
 </script>
 
 <style scoped></style>

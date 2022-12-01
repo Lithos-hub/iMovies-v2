@@ -1,7 +1,12 @@
 <template>
-  <div class="z-50">
+  <div class="z-50 relative">
     <Navbar />
-    <main class="mt-5">
+    <Spinner
+      v-if="loading"
+      lg
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+    />
+    <main class="mt-5" v-else>
       <router-view></router-view>
     </main>
     <Snackbar v-if="display" :message="message" :type="type" />
@@ -21,24 +26,30 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, computed, ref, Transition } from "vue";
+import { watch, onMounted, computed, ref, Transition, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 
 import Navbar from "./components/Navbar.vue";
 import Snackbar from "./components/Snackbar/Snackbar.vue";
-import { useSnackbarStore } from "./components/Snackbar/store";
+import Spinner from "./components/Spinner.vue";
 
 import { storeToRefs } from "pinia";
 import { useMediaStore } from "./stores/Media";
 import { useMoviesStore } from "./stores/Movies";
 import { useFloatMenuStore } from "./stores/FloatMenu";
 import { useUserStore } from "./stores/User";
+import { useSpinnerStore } from "./stores/Spinner";
+import { useSnackbarStore } from "./components/Snackbar/store";
 
 import Auth from "./services/Auth";
+
 import { User } from "./models/interfaces/User";
 
 const { getScreenType } = useMediaStore();
-const movieStore = useMoviesStore();
+const spinnerStore = useSpinnerStore();
+const { setLoading } = useSpinnerStore();
+const { loading } = storeToRefs(spinnerStore);
+const { getMyMovies, clearMovies } = useMoviesStore();
 const floatMenuStore = useFloatMenuStore();
 const snackbarStore = useSnackbarStore();
 const { setUser } = useUserStore();
@@ -58,27 +69,40 @@ const goUp = () => window.scrollTo({ top: 0, behavior: "smooth" });
 watch(
   () => route.path,
   () => {
-    movieStore.$reset();
+    clearMovies();
     floatMenuStore.$reset();
   }
 );
 
 onMounted(async () => {
+  getScreenType();
   window.onresize = getScreenType;
 
   try {
-    const user = await Auth.getUserInfo();
-    setUser(user as User);
+    setLoading(true);
+    const { data } = await Auth.getUserInfo();
+    if (data) {
+      await getMyMovies();
+      setUser(data as User);
+      setLoading(false);
+    }
   } catch (error) {
     console.error(error);
+    localStorage.clear();
+  } finally {
+    setLoading(false);
   }
+});
+
+onUnmounted(() => {
+  Auth.logout();
 });
 </script>
 
 <style lang="scss">
 @import "./scss/variables";
 
-* > body :not(#bg-blur) {
+* > body :not(#bg-blur, .dialog__header) {
   z-index: 1;
 }
 

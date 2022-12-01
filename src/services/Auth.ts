@@ -17,7 +17,7 @@ export default {
     const { data } = await API.post(`auth/signup`, value);
     return data;
   },
-  async getUserInfo(): Promise<AxiosResponse<any, any> | User> {
+  async getUserInfo() {
     API.setAuthorization();
     API.setJsonHeader();
     const userStore = useUserStore();

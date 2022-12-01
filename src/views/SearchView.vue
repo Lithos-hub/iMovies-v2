@@ -41,7 +41,7 @@
       />
     </div>
     <div
-      class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+      class="mt-5 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-5"
       v-if="category === 'artists'"
     >
       <div

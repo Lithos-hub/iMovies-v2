@@ -1,9 +1,12 @@
+@import "./animations";
+
 h1:not(#movie__title),
 h2,
 h3 {
   background: linear-gradient(120deg, #330d69, #30c9cd);
   filter: brightness(1.5);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -14,6 +17,7 @@ h1 {
 #movie__title {
   background: linear-gradient(120deg, #22d3ee, #164e63);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   max-width: max-content;
 }
@@ -39,19 +43,23 @@ hr {
 }
 
 .blurring__title--primary {
-  @apply absolute bottom-0 left-0 text-[20px] md:text-[18px] lg:text-[16px] w-full bg-cyan-900 bg-opacity-50 backdrop-blur-sm;
+  @apply text-[20px] md:text-[18px] lg:text-[16px] w-full bg-cyan-900 bg-opacity-50 backdrop-blur-sm;
 }
 
 .blurring__title--secondary {
-  @apply absolute bottom-0 left-0 text-[20px] md:text-[18px] lg:text-[16px] w-full bg-indigo-900 bg-opacity-50 backdrop-blur-sm;
+  @apply text-[20px] md:text-[18px] lg:text-[16px] w-full bg-indigo-900 bg-opacity-50 backdrop-blur-sm;
 }
 
-.movie-card--options {
-  @apply absolute bottom-6 left-0 w-full bg-slate-900 bg-opacity-50 backdrop-blur-sm p-1;
+.image-overlay {
+  @apply absolute h-[75%] w-full hover:bg-gradient-to-b hover:from-blue-500 hover:mix-blend-overlay hover:brightness-125 cursor-pointer rounded-t-lg;
+}
+
+.movie-card--actions {
+  @apply bg-slate-900 bg-opacity-50 backdrop-blur-sm p-1;
 }
 
 .movie-card--buttons {
-  @apply p-2  aspect-square text-[15px] md:text-[18px] lg:text-[20px]  hover:text-[#202020] rounded-full duration-200;
+  @apply p-2  aspect-square text-[15px] md:text-[18px] lg:text-[20px]  hover:text-[#202020] rounded-full duration-100;
 }
 
 .movieFloatMenuItem {

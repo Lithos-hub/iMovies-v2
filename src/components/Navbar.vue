@@ -88,7 +88,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
 import { navbarMenuLinks, accountMenuItems } from "../utils";
 
@@ -112,7 +112,6 @@ const { open } = useFloatMenuStore();
 const { showDefaultFloatMenu } = storeToRefs(floatMenuStore);
 
 const route = useRoute();
-const router = useRouter();
 
 const screen = computed(() => mediaStore.getScreen);
 const menu = ref(false);

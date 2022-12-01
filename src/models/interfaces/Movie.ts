@@ -25,6 +25,7 @@ export interface MovieAxiosOptions {
   with_genres?: number;
   exclude_genres?: string;
   "vote_average.gte"?: number | string;
+  "vote_count.gte"?: number | string;
   "primary_release_date.gte"?: string;
   "primary_release_date.lte"?: string;
 }
@@ -64,7 +65,7 @@ export interface MovieDetailsModel {
   poster_path: string;
   production_companies: ProductionCompany[];
   production_countries: ProductionCountry[];
-  release_date: Date;
+  release_date: Date | String;
   revenue: number;
   runtime: number;
   spoken_languages: SpokenLanguage[];

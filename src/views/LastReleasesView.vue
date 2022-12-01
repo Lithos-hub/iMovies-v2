@@ -52,6 +52,7 @@ onMounted(async () => {
     sort_by: "release_date.desc",
     "vote_average.gte": 7,
     "primary_release_date.gte": ONE_MONTH_AGO,
+    "vote_count.gte": 200,
     "primary_release_date.lte": CURRENT_DATE,
   });
   isLoading.value = false;

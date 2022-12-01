@@ -5,6 +5,7 @@ import {
   NavigationGuardNext,
   RouteLocation,
 } from "vue-router";
+import { useMoviesStore } from "./stores/Movies";
 import { useUserStore } from "./stores/User";
 
 const requiresAuth = async (
@@ -13,11 +14,13 @@ const requiresAuth = async (
   next: NavigationGuardNext
 ) => {
   const userStore = useUserStore();
+  const { getMyMovies } = useMoviesStore();
   const { TOKEN_ID } = storeToRefs(userStore);
   if (!TOKEN_ID.value) {
     console.log("Access denied");
     next("/");
   } else {
+    await getMyMovies();
     next();
   }
 };
