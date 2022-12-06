@@ -5,7 +5,7 @@
 
     <section
       data-testid="wrapper"
-      class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
+      class="mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg mx-auto"
     >
       <div class="grid grid-cols-2 justify-center">
         <h5 class="text-2xl tracking-widest mb-5">Favourite</h5>

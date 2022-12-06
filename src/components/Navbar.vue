@@ -1,6 +1,6 @@
 <template>
   <div data-testid="wrapper">
-    <div v-if="screen !== 'sm'" class="navbar">
+    <div v-if="screen !== 'sm' && screen !== 'md'" class="navbar">
       <ul class="flex justify-between align-middle px-2">
         <!-- NAVBAR MENU ITEMS -->
         <li

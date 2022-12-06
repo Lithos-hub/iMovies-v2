@@ -8,7 +8,7 @@
   <section
     v-if="user && !loading"
     data-testid="wrapper"
-    class="relative container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg md:text-left"
+    class="relative mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg md:text-left"
   >
     <div class="flex flex-col md:grid md:grid-cols-12">
       <div class="flex flex-col text-center md:col-span-3">

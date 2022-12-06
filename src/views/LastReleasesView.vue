@@ -3,7 +3,7 @@
   <h1>Last releases</h1>
   <section
     data-testid="wrapper"
-    class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
+    class="mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
     v-if="dataLoaded"
   >
     <div class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-5">

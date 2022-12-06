@@ -1,7 +1,7 @@
 <template>
   <section
     data-testid="wrapper"
-    class="container mt-10 rounded-[15px] relative mx-auto bg-[#050505]"
+    class="mt-10 rounded-[15px] relative mx-auto bg-[#050505]"
     v-if="dataLoaded"
   >
     <div

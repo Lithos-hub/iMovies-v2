@@ -39,9 +39,10 @@ export const useMoviesStore = defineStore("useMovies", {
         this.movies = res.sort((a: MovieListModel, b: MovieListModel) => {
           const date_a = String(a.release_date);
           const date_b = String(b.release_date);
-          if (date_a && date_b) {
-            return date_a.split("-").at(-1) < date_b.split("-").at(-1) ? 1 : -1;
-          }
+
+          const splitted_date_a = date_a.split("-").at(-1) as string;
+          const splitted_date_b = date_b.split("-").at(-1) as string;
+          return splitted_date_a < splitted_date_b ? 1 : -1;
         });
       });
     },

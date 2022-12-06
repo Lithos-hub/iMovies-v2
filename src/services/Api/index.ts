@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
-import { storeToRefs } from "pinia";
-import { useUserStore } from "../../stores/User";
+
 export class Api {
   private static instance: Api;
   public client!: AxiosInstance;

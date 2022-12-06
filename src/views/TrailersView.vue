@@ -2,7 +2,7 @@
   <h1>New movie trailers</h1>
   <section
     data-testid="wrapper"
-    class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
+    class="mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg"
     v-if="!isLoading && dataLoaded"
   >
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 p-5">

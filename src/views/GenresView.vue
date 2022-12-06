@@ -3,7 +3,7 @@
   <h1>Movies by genre</h1>
   <section
     data-testid="wrapper"
-    class="container mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg text-right grid md:grid-cols-3 gap-2"
+    class="mt-10 bg-[#050505] bg-opacity-50 p-5 rounded-lg text-right grid md:grid-cols-3 gap-2"
     v-if="dataLoaded"
   >
     <article
