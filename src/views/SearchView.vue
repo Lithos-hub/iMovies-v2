@@ -1,5 +1,5 @@
 <template>
-  <MenuFloat v-if="showFloatMenu" />
+  <FloatMenu v-if="showFloatMenu" />
   <h1>Search movies or artists</h1>
   <SearchInput
     placeholder="Search by movie title, artist name, etc"
@@ -38,6 +38,7 @@
         :key="i"
         :data="movie"
         show-date-info
+        has-actions
       />
     </div>
     <div
@@ -89,16 +90,14 @@ import { TMDB_IMG_BASE_URL } from "../utils";
 
 import Spinner from "../components/Spinner.vue";
 import SearchInput from "../components/SearchInput.vue";
-import MenuFloat from "../components/FloatMenu.vue";
+import FloatMenu from "../components/FloatMenu.vue";
 import { useFloatMenuStore } from "../stores/FloatMenu";
 import MovieCard from "../components/MovieCard.vue";
 
 const movieStore = useMoviesStore();
 
 const { movies, artistResults, errorImage } = storeToRefs(movieStore);
-const floatMenuStore = useFloatMenuStore();
-
-const { showFloatMenu } = storeToRefs(floatMenuStore);
+const { showFloatMenu } = storeToRefs(useFloatMenuStore());
 
 const dataLoaded = computed(
   () => movies.value.length > 0 || artistResults.value.length

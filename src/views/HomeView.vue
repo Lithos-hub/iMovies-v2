@@ -1,6 +1,6 @@
 <template>
   <section data-testid="wrapper" v-if="dataLoaded">
-    <MenuFloat v-if="showFloatMenu" />
+    <FloatMenu v-if="showFloatMenu" />
     <div
       ref="carrousel"
       id="carrousel"
@@ -102,7 +102,7 @@ import { useMoviesStore } from "../stores/Movies";
 import { useNavigationStore } from "../stores/Navigation";
 
 import Spinner from "../components/Spinner.vue";
-import MenuFloat from "../components/FloatMenu.vue";
+import FloatMenu from "../components/FloatMenu.vue";
 
 import { TMDB_IMG_BASE_URL } from "../utils";
 import { parseDate } from "../services/utils";
@@ -113,8 +113,9 @@ const floatMenuStore = useFloatMenuStore();
 const { open } = useFloatMenuStore();
 const { showFloatMenu } = storeToRefs(floatMenuStore);
 
-const { movieOfTheWeek, trailerOfTheWeek, errorImagePan } =
-  storeToRefs(movieStore);
+const { movieOfTheWeek, trailerOfTheWeek, errorImagePan } = storeToRefs(
+  useMoviesStore()
+);
 const carrousel = ref();
 const dataLoaded = computed(
   () =>

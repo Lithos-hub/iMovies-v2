@@ -14,7 +14,7 @@ export default {
     const url = getQueryByOptions(options);
     return apiCall(url);
   },
-  getMovieById(id: string) {
+  getMovieById(id: number) {
     const url = getMovieQueryById(id);
     return apiCall(url);
   },

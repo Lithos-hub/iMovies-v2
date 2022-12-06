@@ -1,5 +1,5 @@
 <template>
-  <MenuFloat v-if="showFloatMenu" />
+  <FloatMenu v-if="showFloatMenu" />
   <h1>Last releases</h1>
   <section
     data-testid="wrapper"
@@ -12,6 +12,7 @@
         :key="i"
         :data="movie"
         show-date-info
+        has-actions
       />
     </div>
   </section>
@@ -31,7 +32,7 @@ import { CURRENT_DATE, ONE_MONTH_AGO } from "../services/utils";
 import { useMoviesStore } from "../stores/Movies";
 import { useFloatMenuStore } from "../stores/FloatMenu";
 
-import MenuFloat from "../components/FloatMenu.vue";
+import FloatMenu from "../components/FloatMenu.vue";
 
 import Spinner from "../components/Spinner.vue";
 import MovieCard from "../components/MovieCard.vue";
@@ -41,7 +42,7 @@ const floatMenuStore = useFloatMenuStore();
 
 const { showFloatMenu } = storeToRefs(floatMenuStore);
 
-const { movies } = storeToRefs(movieStore);
+const { movies } = storeToRefs(useMoviesStore());
 
 const isLoading = ref(true);
 const dataLoaded = computed(() => movies.value.length > 0);

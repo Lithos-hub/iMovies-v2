@@ -19,13 +19,13 @@
     <div class="blurring__title--primary">
       <small>{{ title }}</small>
     </div>
-    <MovieCardActions :id="id" />
+    <MovieCardActions v-if="hasActions" :id="id" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { MovieListModel } from "../models/interfaces/Movie";
+import { MovieDetailsModel, MovieListModel } from "../models/interfaces/Movie";
 import { parseDate } from "../services/utils";
 import { useFloatMenuStore } from "../stores/FloatMenu";
 import { useMoviesStore } from "../stores/Movies";
@@ -33,13 +33,13 @@ import { TMDB_IMG_BASE_URL } from "../utils";
 import MovieCardActions from "./MovieCardActions.vue";
 
 const { open } = useFloatMenuStore();
-const movieStore = useMoviesStore();
 
-const { errorImage } = storeToRefs(movieStore);
+const { errorImage } = storeToRefs(useMoviesStore());
 
 const props = defineProps<{
-  data: MovieListModel;
+  data: MovieListModel | MovieDetailsModel;
   showDateInfo?: boolean;
+  hasActions?: boolean;
 }>();
 
 const { id, title, poster_path, release_date } = props.data;

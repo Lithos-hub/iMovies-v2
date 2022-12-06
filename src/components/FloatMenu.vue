@@ -64,10 +64,8 @@ defineProps<{
   items?: Link[];
 }>();
 
-const floatMenuStore = useFloatMenuStore();
-const { id } = useFloatMenuStore();
-const { clientX, clientY, showFloatMenu, showDefaultFloatMenu } =
-  storeToRefs(floatMenuStore);
+const { id, clientX, clientY, showFloatMenu, showDefaultFloatMenu } =
+  storeToRefs(useFloatMenuStore());
 const { goTo } = useNavigationStore();
 
 const floatMenu = ref();

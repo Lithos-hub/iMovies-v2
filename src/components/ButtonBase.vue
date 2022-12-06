@@ -27,9 +27,7 @@ defineProps<{
   loadingIcon?: boolean;
 }>();
 
-const spinnerStore = useSpinnerStore();
-
-const { loading } = storeToRefs(spinnerStore);
+const { loading } = storeToRefs(useSpinnerStore());
 </script>
 
 <style scoped></style>

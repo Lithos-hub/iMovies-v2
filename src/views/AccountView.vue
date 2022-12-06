@@ -124,8 +124,7 @@ import {
 import { ATLAS_IMG_BASE_URL } from "../utils";
 
 const { setUser, setUserIds } = useUserStore();
-const userStore = useUserStore();
-const { user, USER_ID } = storeToRefs(userStore);
+const { user, USER_ID } = storeToRefs(useUserStore());
 
 const { loading } = storeToRefs(useSpinnerStore());
 const { showSnackbar } = useSnackbarStore();

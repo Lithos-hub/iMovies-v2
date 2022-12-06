@@ -106,10 +106,9 @@ const { TOKEN_ID } = storeToRefs(userStore);
 
 const mediaStore = useMediaStore();
 
-const floatMenuStore = useFloatMenuStore();
 const { open } = useFloatMenuStore();
 
-const { showDefaultFloatMenu } = storeToRefs(floatMenuStore);
+const { showDefaultFloatMenu } = storeToRefs(useFloatMenuStore());
 
 const route = useRoute();
 

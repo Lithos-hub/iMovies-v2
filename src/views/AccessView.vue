@@ -166,8 +166,7 @@ import { storeToRefs } from "pinia";
 
 const { goTo } = useNavigationStore();
 const { showSnackbar } = useSnackbarStore();
-const spinnerStore = useSpinnerStore();
-const { loading } = storeToRefs(spinnerStore);
+const { loading } = storeToRefs(useSpinnerStore());
 const { setLoading } = useSpinnerStore();
 
 const { setUser, setUserIds } = useUserStore();

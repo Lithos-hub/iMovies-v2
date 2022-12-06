@@ -30,8 +30,7 @@ import ComebackButton from "../components/ComebackButton.vue";
 
 const route = useRoute();
 const movieStore = useMoviesStore();
-
-const { movieTrailer } = storeToRefs(movieStore);
+const { movieTrailer } = storeToRefs(useMoviesStore());
 
 const dataLoaded = computed(() => Object.keys(movieTrailer).length);
 

@@ -20,8 +20,7 @@ export default {
   async getUserInfo() {
     API.setAuthorization();
     API.setJsonHeader();
-    const userStore = useUserStore();
-    const { USER_ID } = storeToRefs(userStore);
+    const { USER_ID } = storeToRefs(useUserStore());
     return await API.post(`auth/session`, { _id: USER_ID.value });
   },
   logout() {

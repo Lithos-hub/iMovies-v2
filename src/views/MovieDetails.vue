@@ -134,19 +134,21 @@
             />
             <MovieCardActions :id="id" />
           </div>
-          <button
-            class="relative button__primary"
-            @click="goTo(`/movie/${id}/video`)"
-          >
-            Show trailer
-          </button>
-          <button
-            v-if="movie.homepage"
-            class="relative button__secondary"
-            @click="goTo(movie.homepage)"
-          >
-            Visit webpage
-          </button>
+          <div class="flex justify-between">
+            <button
+              class="relative button__primary"
+              @click="goTo(`/movie/${id}/video`)"
+            >
+              Show trailer
+            </button>
+            <button
+              v-if="movie.homepage"
+              class="relative button__secondary"
+              @click="goTo(movie.homepage)"
+            >
+              Visit webpage
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -176,15 +178,15 @@ import { parseDate } from "../services/utils";
 const route = useRoute();
 const movieStore = useMoviesStore();
 const { goTo } = useNavigationStore();
-const id = route.params.id as string;
+const id = Number(route.params.id);
 
-const { movie, errorImage } = storeToRefs(movieStore);
+const { movie, errorImage } = storeToRefs(useMoviesStore());
 
 const isLoading = ref(true);
 const dataLoaded = computed(() => Object.keys(movie.value).length > 0);
 
 const getMovie = async () => {
-  await movieStore.getMovieDetails(id as string).then(() => {
+  await movieStore.getMovieDetails(id).then(() => {
     isLoading.value = false;
   });
 };

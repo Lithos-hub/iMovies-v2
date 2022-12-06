@@ -18,7 +18,7 @@
   </div>
   <Transition name="fade">
     <i
-      v-if="reachBottom"
+      v-if="reachBottom === true"
       @click="goUp"
       class="fa-solid fa-chevron-up fixed bottom-10 right-10 bg-[#202020] text-cyan-500 p-3 rounded-full hover:bg-cyan-500 hover:text-[#202020] duration-200"
     ></i>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, computed, ref, Transition, onUnmounted } from "vue";
+import { watch, onMounted, computed, Transition, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import Navbar from "./components/Navbar.vue";
@@ -46,25 +46,18 @@ import Auth from "./services/Auth";
 import { User } from "./models/interfaces/User";
 
 const { getScreenType } = useMediaStore();
-const spinnerStore = useSpinnerStore();
 const { setLoading } = useSpinnerStore();
-const { loading } = storeToRefs(spinnerStore);
+const { loading } = storeToRefs(useSpinnerStore());
 const { getMyMovies, clearMovies } = useMoviesStore();
-const floatMenuStore = useFloatMenuStore();
-const snackbarStore = useSnackbarStore();
 const { setUser } = useUserStore();
 
-const { message, type, display } = storeToRefs(snackbarStore);
+const floatMenuStore = useFloatMenuStore();
+
+const { message, type, display } = storeToRefs(useSnackbarStore());
 
 const route = useRoute();
 
 const reachBottom = ref(false);
-window.onscroll = () => {
-  reachBottom.value =
-    window.innerHeight + window.scrollY >= document.body.offsetHeight / 2;
-};
-
-const goUp = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 watch(
   () => route.path,
@@ -74,7 +67,14 @@ watch(
   }
 );
 
+const goUp = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+const onScroll = () =>
+  (reachBottom.value =
+    window.innerHeight + window.scrollY >= document.body.offsetHeight / 2);
+
 onMounted(async () => {
+  window.addEventListener("scroll", () => onScroll());
   getScreenType();
   window.onresize = getScreenType;
 
@@ -96,6 +96,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   Auth.logout();
+  window.removeEventListener("scroll", () => onScroll());
 });
 </script>
 

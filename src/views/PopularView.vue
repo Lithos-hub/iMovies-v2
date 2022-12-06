@@ -1,5 +1,5 @@
 <template>
-  <MenuFloat v-if="showFloatMenu" />
+  <FloatMenu v-if="showFloatMenu" />
   <h1>Popular movies by year</h1>
   <SearchInput
     v-model="year"
@@ -16,7 +16,12 @@
     v-if="dataLoaded"
   >
     <div class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-5">
-      <MovieCard v-for="(movie, i) of movies" :key="i" :data="movie" />
+      <MovieCard
+        has-actions
+        v-for="(movie, i) of movies"
+        :key="i"
+        :data="movie"
+      />
     </div>
   </section>
   <div v-if="isLoading && !dataLoaded">
@@ -32,7 +37,7 @@ import { storeToRefs } from "pinia";
 
 import { useMoviesStore } from "../stores/Movies";
 
-import MenuFloat from "../components/FloatMenu.vue";
+import FloatMenu from "../components/FloatMenu.vue";
 import SearchInput from "../components/SearchInput.vue";
 import Spinner from "../components/Spinner.vue";
 
@@ -41,10 +46,8 @@ import MovieCard from "../components/MovieCard.vue";
 
 const movieStore = useMoviesStore();
 
-const floatMenuStore = useFloatMenuStore();
-
 const { movies } = storeToRefs(movieStore);
-const { showFloatMenu } = storeToRefs(floatMenuStore);
+const { showFloatMenu } = storeToRefs(useFloatMenuStore());
 
 const isLoading = ref(false);
 const currentYear = new Date().getFullYear();

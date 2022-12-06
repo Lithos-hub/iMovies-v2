@@ -8,7 +8,7 @@ export interface MovieListModel {
   overview: string;
   popularity: number;
   poster_path: string;
-  release_date: string;
+  release_date: Date | string;
   title: string;
   video: boolean;
   vote_average: number;
@@ -65,7 +65,7 @@ export interface MovieDetailsModel {
   poster_path: string;
   production_companies: ProductionCompany[];
   production_countries: ProductionCountry[];
-  release_date: Date | String;
+  release_date: Date | string;
   revenue: number;
   runtime: number;
   spoken_languages: SpokenLanguage[];

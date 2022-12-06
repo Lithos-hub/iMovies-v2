@@ -13,9 +13,8 @@ const requiresAuth = async (
   __: RouteLocation,
   next: NavigationGuardNext
 ) => {
-  const userStore = useUserStore();
   const { getMyMovies } = useMoviesStore();
-  const { TOKEN_ID } = storeToRefs(userStore);
+  const { TOKEN_ID } = storeToRefs(useUserStore());
   if (!TOKEN_ID.value) {
     console.log("Access denied");
     next("/");

@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { useMoviesStore } from "../stores/Movies";
 import { useUserStore } from "../stores/User";
 
@@ -35,10 +35,9 @@ defineProps<{
 }>();
 
 const movieStore = useMoviesStore();
-const { favourite, wishlist, callCounter } = storeToRefs(movieStore);
+const { favourite, wishlist, callCounter } = storeToRefs(useMoviesStore());
 const { postMovie } = useMoviesStore();
-const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+const { user } = storeToRefs(useUserStore());
 
 onMounted(async () => {
   if (user.value && callCounter.value === 0) {

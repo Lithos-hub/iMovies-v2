@@ -1,5 +1,5 @@
 <template>
-  <MenuFloat v-if="showFloatMenu" />
+  <FloatMenu v-if="showFloatMenu" />
   <h1>Movies by genre</h1>
   <section
     data-testid="wrapper"
@@ -38,6 +38,7 @@
           v-for="(movie, i) of selectedData.selected_movies"
           :key="i"
           :data="movie"
+          has-actions
         />
       </div>
     </section>
@@ -61,17 +62,15 @@ import { storeToRefs } from "pinia";
 
 import { MovieListModel } from "../models/interfaces/Movie";
 
-import MenuFloat from "../components/FloatMenu.vue";
+import FloatMenu from "../components/FloatMenu.vue";
 import Spinner from "../components/Spinner.vue";
 import Dialog from "../components/Dialog.vue";
 import MovieCard from "../components/MovieCard.vue";
 
 const movieStore = useMoviesStore();
-const floatMenuStore = useFloatMenuStore();
-const { open } = useFloatMenuStore();
 
-const { movies, errorImage, errorImagePan } = storeToRefs(movieStore);
-const { showFloatMenu } = storeToRefs(floatMenuStore);
+const { movies, errorImagePan } = storeToRefs(movieStore);
+const { showFloatMenu } = storeToRefs(useFloatMenuStore());
 
 const moviesByGenre: Ref<Record<string, any>[]> = ref([]);
 

@@ -37,8 +37,8 @@ export const useMoviesStore = defineStore("useMovies", {
     async getMovies(options: MovieAxiosOptions) {
       await MoviesServices.getMovies(options).then((res: any) => {
         this.movies = res.sort((a: MovieListModel, b: MovieListModel) => {
-          const date_a = a.release_date;
-          const date_b = b.release_date;
+          const date_a = String(a.release_date);
+          const date_b = String(b.release_date);
           if (date_a && date_b) {
             return date_a.split("-").at(-1) < date_b.split("-").at(-1) ? 1 : -1;
           }
@@ -48,7 +48,7 @@ export const useMoviesStore = defineStore("useMovies", {
     clearMovies() {
       this.movies = [];
     },
-    async getMovieDetails(id: string) {
+    async getMovieDetails(id: number) {
       await MoviesServices.getMovieById(id).then((res) => {
         this.movie = res as MovieDetailsModel;
       });
