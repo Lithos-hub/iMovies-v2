@@ -141,13 +141,14 @@
             >
               Show trailer
             </button>
-            <button
+            <a
               v-if="movie.homepage"
+              :href="movie.homepage"
+              target="_blank"
               class="relative button__secondary"
-              @click="goTo(movie.homepage)"
             >
               Visit webpage
-            </button>
+            </a>
           </div>
         </div>
       </div>
